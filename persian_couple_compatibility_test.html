@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پرسشنامه شناخت متقابل زوجین</title>
+<style>
+  :root{
+    --ink:#1c2530; --muted:#5d6774; --paper:#eeeff3; --sheet:#ffffff;
+    --line:#dcdee6; --accent:#1f6f6b; --accent-soft:#d9eeec; --accent-ink:#0f4341;
+    --plum:#8a3a57; --plum-soft:#f6e6ec; --warn:#fff6dd; --warn-line:#d9a520;
+    --miss:#9a1c1c; --miss-soft:#f9e3e3;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:Tahoma,"Segoe UI",Arial,sans-serif;line-height:1.95;font-size:16px}
+  .wrap{max-width:820px;margin:0 auto;padding:24px 16px 120px}
+  header.top{padding:8px 4px 20px}
+  h1{margin:0 0 6px;font-size:27px;line-height:1.5}
+  header.top p{margin:0;color:var(--muted)}
+  .modes{display:flex;gap:6px;margin:18px 0 16px;border-bottom:2px solid var(--line)}
+  .modes button{background:none;border:0;padding:10px 16px;font:inherit;font-weight:700;color:var(--muted);
+    cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px}
+  .modes button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+  button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-within,summary:focus-visible{outline:3px solid #7fb7b3;outline-offset:2px}
+
+  .note{border-right:4px solid var(--warn-line);background:var(--warn);padding:12px 16px;border-radius:8px;margin:0 0 12px;font-size:15px}
+  .note.info{border-right-color:var(--accent);background:var(--accent-soft)}
+  .note b{display:inline-block;margin-left:4px}
+
+  /* نوار پیشرفت چسبان، چون همه‌ی سؤال‌ها در یک صفحه‌اند */
+  .progress-wrap{position:sticky;top:0;z-index:5;background:var(--paper);padding:10px 0 10px;margin:4px 0 6px}
+  .bar{height:8px;background:#d9dce4;border-radius:8px;overflow:hidden;margin:0 0 4px}
+  .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+  .small{font-size:13px;color:var(--muted)}
+
+  .sheet{background:var(--sheet);border-radius:14px;padding:26px 26px 12px;box-shadow:0 1px 0 var(--line)}
+  .sheet h2{margin:0 0 4px;font-size:21px}
+
+  /* راهنمای کوتاه درون جریان سؤال‌ها (بدون تقسیم به بخش) */
+  .lead{margin:26px 0 2px;padding:10px 14px;border-right:3px solid var(--accent);background:#f4f8f8;
+    border-radius:8px;font-size:14.5px;color:#34404d}
+  .sheet > .lead:first-child{margin-top:0}
+  .lead + .q{border-top:0}
+
+  .q{padding:18px 0;border-top:1px solid var(--line);scroll-margin-top:90px}
+  .q-text{font-weight:600;margin-bottom:10px}
+  .q-text small{font-weight:400;color:var(--muted);margin-right:6px}
+  .q.missing .q-text::after{content:"بی‌پاسخ";display:inline-block;margin-right:8px;font-size:12px;font-weight:400;
+    line-height:1.8;color:var(--miss);background:var(--miss-soft);border-radius:6px;padding:0 8px}
+  .sub-label{font-size:14px;color:var(--muted);margin:10px 0 6px}
+
+  .scale5{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+  .scale6{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  label.pill{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    gap:2px;border:1px solid var(--line);border-radius:10px;padding:8px 4px;cursor:pointer;background:#fff;
+    font-size:12.5px;line-height:1.5;min-height:58px}
+  label.pill b{font-size:16px}
+  label.pill:hover{background:#f4f8f8}
+  label.pill.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+  label.pill input,label.opt input{position:absolute;opacity:0;pointer-events:none}
+  .fant .pill.on{background:var(--plum-soft);border-color:var(--plum);color:#5e2238}
+  .opts{display:flex;flex-direction:column;gap:6px}
+  label.opt{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;background:#fff}
+  label.opt:hover{background:#f4f8f8}
+  label.opt::before{content:"";flex:0 0 16px;height:16px;border:2px solid #9aa3b0;border-radius:50%}
+  label.opt.chk::before{border-radius:4px}
+  label.opt.on{background:var(--accent-soft);border-color:var(--accent)}
+  label.opt.on::before{background:var(--accent);border-color:var(--accent);box-shadow:inset 0 0 0 3px var(--accent-soft)}
+  label.opt.chk.on::before{box-shadow:none}
+  input[type=text],textarea{width:100%;font:inherit;border:1px solid #c5cad5;border-radius:10px;padding:10px 12px;background:#fff;color:var(--ink)}
+  textarea{min-height:96px;resize:vertical}
+
+  details.sources{margin-top:14px;padding:14px 26px}
+  details.sources p{margin:8px 0;font-size:13.5px;color:var(--muted);line-height:1.9}
+  details.sources p b{color:var(--ink);font-weight:600}
+
+  .pager{display:flex;justify-content:space-between;gap:10px;margin:16px 0}
+  button.btn{border:0;border-radius:10px;padding:11px 20px;font:inherit;font-size:15px;cursor:pointer}
+  .primary{background:var(--accent);color:#fff}
+  .secondary{background:#e2e6ee;color:#243043}
+  .danger{background:var(--miss-soft);color:var(--miss)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+
+  .dock{position:fixed;inset-inline:0;bottom:0;background:rgba(238,239,243,.96);border-top:1px solid var(--line);padding:10px 16px;z-index:10}
+  .dock .in{max-width:820px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  #status{color:var(--accent);font-weight:700;font-size:14px}
+
+  .cmp-drop{display:grid;gap:12px;grid-template-columns:1fr}
+  @media(min-width:640px){.cmp-drop{grid-template-columns:1fr 1fr}}
+  .filebox{background:#fff;border:1px dashed #9aa8b8;border-radius:12px;padding:16px}
+  .filebox input{margin-top:8px;max-width:100%}
+  #report .sheet{margin-bottom:14px}
+  .big{font-size:34px;font-weight:700;color:var(--accent)}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
+  th{color:var(--muted);font-weight:600}
+  .meter{height:8px;background:#e3e6ec;border-radius:6px;min-width:70px;overflow:hidden}
+  .meter i{display:block;height:100%;background:var(--accent)}
+  .tag{display:inline-block;font-size:12px;border-radius:6px;padding:0 8px;background:#e8ebf1}
+  .tag.ok{background:var(--accent-soft);color:var(--accent-ink)}
+  .tag.talk{background:var(--plum-soft);color:#5e2238}
+  .diffitem{padding:10px 0;border-top:1px solid var(--line)}
+  details{margin:8px 0}
+  summary{cursor:pointer;font-weight:700}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .two div{background:#f6f7fa;border-radius:8px;padding:8px 10px;font-size:14px;white-space:pre-wrap}
+  .hidden{display:none}
+  @media(max-width:600px){h1{font-size:22px}.sheet{padding:20px 14px 8px}details.sources{padding:12px 14px}.scale6{grid-template-columns:repeat(3,1fr)}}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>پرسشنامه شناخت متقابل زوجین</h1>
+    <p>برای اینکه ببینید در نگرش، میل، تجربه، خیال‌پردازی و انتظارات چقدر شبیه هم هستید و کجاها باید بیشتر گفت‌وگو کنید.</p>
+  </header>
+
+  <div class="modes" role="tablist">
+    <button role="tab" id="tabFill" aria-selected="true">۱. تکمیل پرسشنامه</button>
+    <button role="tab" id="tabCmp" aria-selected="false">۲. مقایسه دو فایل</button>
+  </div>
+
+  <!-- ===== حالت تکمیل ===== -->
+  <div id="viewFill">
+    <div class="note">
+      <b>قبل از شروع:</b> هر نفر پرسشنامه را جداگانه و بدون دیدن پاسخ‌های نفر دیگر پر کند. همه‌ی سؤال‌های حساس گزینه‌ی «ترجیح می‌دهم نگویم» یا «حضوری می‌گویم» دارند و پاسخ دادن به هیچ‌کدام اجباری نیست. این ابزار تشخیص روان‌شناختی یا پیش‌بینی موفقیت رابطه نیست؛ فقط نقطه‌ی شروع گفت‌وگوست.
+    </div>
+    <div class="note info">
+      <b>حریم خصوصی:</b> این صفحه هیچ سروری ندارد و هیچ داده‌ای به اینترنت نمی‌فرستد. پاسخ‌ها فقط تا زمانی که صفحه باز است در حافظه‌ی مرورگر می‌مانند و با دکمه‌ی «ذخیره در فایل TXT» روی دستگاه خودتان ذخیره می‌شوند. فایل را فقط به شریکتان بدهید.
+    </div>
+    <div class="progress-wrap">
+      <div class="bar"><i id="progress"></i></div>
+      <div class="small" id="progressText"></div>
+    </div>
+    <form id="quiz" class="sheet" onsubmit="return false"></form>
+    <details class="sheet sources">
+      <summary>منابع پرسش‌ها</summary>
+      <div id="srcList"></div>
+    </details>
+  </div>
+
+  <!-- ===== حالت مقایسه ===== -->
+  <div id="viewCmp" class="hidden">
+    <div class="note info">
+      <b>روش کار:</b> پس از اینکه هر دو نفر پرسشنامه را پر و فایل TXT خود را ذخیره کردید، هر دو فایل را اینجا انتخاب کنید. مقایسه کاملاً داخل مرورگر انجام می‌شود و چیزی ارسال نمی‌شود. نتیجه‌ی مقایسه همه‌ی پاسخ‌های هر دو نفر را نشان می‌دهد، پس فقط وقتی انجامش دهید که هر دو راضی‌اید.
+    </div>
+    <div class="cmp-drop">
+      <div class="filebox"><b>فایل نفر اول</b><br><input type="file" id="fileA" accept=".txt,text/plain"></div>
+      <div class="filebox"><b>فایل نفر دوم</b><br><input type="file" id="fileB" accept=".txt,text/plain"></div>
+    </div>
+    <div class="pager" style="justify-content:flex-start">
+      <button class="btn primary" id="runCmp">مقایسه کن</button>
+      <button class="btn secondary hidden" id="saveRep">ذخیره‌ی گزارش (TXT)</button>
+    </div>
+    <div id="cmpStatus" class="small"></div>
+    <div id="report"></div>
+  </div>
+</div>
+
+<div class="dock" id="dock">
+  <div class="in">
+    <button class="btn primary" id="saveBtn">ذخیره در فایل TXT</button>
+    <button class="btn secondary" id="copyBtn">کپی پاسخ‌ها</button>
+    <button class="btn danger" id="clearBtn">پاک کردن همه</button>
+    <span id="status" role="status"></span>
+  </div>
+</div>
+
+<script>
+/* ============ ابزارهای کمکی ============ */
+const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]).replace('.', '٫');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt !== undefined) e.textContent = txt; return e; };
+
+/* ============ مقیاس‌های پاسخ ============ */
+const SC = {
+  agree: ["کاملاً مخالفم","بیشتر مخالفم","نه موافق نه مخالف","بیشتر موافقم","کاملاً موافقم"],
+  freq:  ["هرگز","به‌ندرت","گاهی","اغلب","تقریباً همیشه"],
+  level: ["خیلی کم","کم","متوسط","زیاد","خیلی زیاد"]
+};
+const FANT_FREQ = ["هرگز","خیلی کم","کم","گاهی","اغلب","منظم"];               // ۰ تا ۵ (مانند WSFQ)
+const FANT_REAL = ["نه، علاقه‌ای ندارم","شاید، اگر درباره‌اش حرف بزنیم","بله، دوست دارم امتحان کنیم","قبلاً تجربه کرده‌ام و دوست داشتم","قبلاً تجربه کرده‌ام و دوست نداشتم"];
+
+/* تجربه‌های گذشته (نسخه‌ی کوتاه‌شده) */
+const PAST_ACTS = ["بوسه‌ی عاشقانه","لمس و نوازش بدن","رابطه‌ی دهانی","رابطه‌ی جنسی کامل (دخولی)","رابطه‌ی مقعدی","هیچ‌کدام","ترجیح می‌دهم حضوری بگویم"];
+const PAST_WHO  = ["فقط با شریک فعلی‌ام","فقط پیش از آشنایی با او","هم پیش از او، هم با او","هنوز تجربه‌ای نداشته‌ام","ترجیح می‌دهم حضوری بگویم"];
+
+/* سازنده‌ی سؤال‌ها */
+const A=(id,q,sub,rev)=>({id,t:'agree',q,sub,rev});
+const V=(id,q,sub,rev)=>({id,t:'level',q,sub,rev});
+const C=(id,q,opts,cmp=true)=>({id,t:'choice',q,opts,cmp});
+const M=(id,q,opts,excl=[],note='')=>({id,t:'multi',q,opts,excl,note});   // excl: گزینه‌هایی که با بقیه جمع نمی‌شوند
+const T=(id,q,area,cmp=true)=>({id,t:'text',q,area,cmp});
+const W=(id,q,sub)=>({id,t:'fant',q,sub});
+
+/* نام زیرمقیاس‌ها: [عنوان، کمینه، بیشینه] */
+const SUBS = {
+  instr:['رابطه جنسی به‌عنوان لذت بدنی (BSAS)',1,5],
+  desire:['میل و علاقه به صمیمیت با شریک',1,5],
+  sens:['تنوع‌طلبی جنسی',1,5],
+  dsc:['راحتی در گفت‌وگوی جنسی',1,5],
+  anx:['اضطراب دلبستگی (ECR-S)',1,5],
+  avo:['اجتناب دلبستگی (ECR-S)',1,5],
+  fI:['فانتزی صمیمانه (WSFQ)',0,5],
+  fE:['فانتزی تجربه‌جویانه (WSFQ)',0,5],
+  fP:['فانتزی غیرشخصی (WSFQ)',0,5],
+  fS:['فانتزی قدرت و کنترل (WSFQ)',0,5],
+  fT:['مجموع فانتزی‌ها (شاخص کلی)',0,5]
+};
+
+/* ============ سؤال‌ها ============
+   همه در یک فهرست پیوسته نمایش داده می‌شوند. «lead» راهنمای کوتاهی است که پیش از
+   اولین سؤال هر گروه می‌آید؛ «src» فقط در بخش «منابع» پایین صفحه نشان داده می‌شود. */
+const S = [
+{ title:'میل و تنوع‌طلبی',
+  src:'الهام‌گرفته از پرسشنامه‌ی میل جنسی (Sexual Desire Inventory؛ Spector, Carey & Steinberg, 1996) و مقیاس تنوع‌طلبی جنسی (Kalichman et al., 1994). گویه‌ها تطبیق‌یافته‌اند، نه ترجمه‌ی عین‌به‌عین. آخرین گویه از مقیاس نگرش جنسی کوتاه (Hendrick, Hendrick & Reich, 2006) است.',
+  lead:'درباره‌ی میل خودتان به شریک فعلی‌تان پاسخ دهید.',
+  items:[
+    C('d1','معمولاً هر چند وقت یک‌بار میل دارید با شریکتان رابطه جنسی داشته باشید؟',["روزانه","چند بار در هفته","حدود هفته‌ای یک‌بار","ماهی چند بار","ماهی یک‌بار یا کمتر"]),
+    C('d2','فراوانی ایده‌آل رابطه جنسی برای شما چقدر است (در رابطه‌ای که هر دو راضی باشند)؟',["روزانه","چند بار در هفته","حدود هفته‌ای یک‌بار","ماهی چند بار","ماهی یک‌بار یا کمتر"]),
+    V('d3','وقتی به رابطه جنسی با شریکتان فکر می‌کنید، شدت میلتان چقدر است؟','desire'),
+    V('d4','چقدر دوست دارید صمیمیت جسمی (بوسه، آغوش، نوازش) با شریکتان داشته باشید؟','desire'),
+    V('d5','وقتی شریکتان به شما نزدیک می‌شود، چقدر تحریک می‌شوید؟','desire'),
+    C('d6','معمولاً چه کسی شروع‌کننده‌ی صمیمیت جنسی است، یا دوست دارید باشد؟',["تقریباً همیشه من","بیشتر من","مساوی","بیشتر شریکم","تقریباً همیشه شریکم"]),
+    A('e1','دوست دارم تجربه‌های جنسی تازه و هیجان‌انگیز داشته باشم.','sens'),
+    A('e2','به امتحان کردن کارهای جدید در رابطه جنسی علاقه‌مندم.','sens'),
+    A('e3','در رابطه جنسی، احساس امنیت و آشنایی برایم مهم‌تر از تنوع است.','sens',true),
+    A('e4','ایده‌ی رابطه جنسی در مکان‌ها یا موقعیت‌های غیرمعمول برایم جذاب است.','sens'),
+    A('i4','رابطه جنسی وقتی بهتر است که آدم زیاد درباره‌اش فکر نکند و خودش را رها کند.','instr')
+  ]},
+
+{ title:'تجربه‌های گذشته', src:'',
+  lead:'سه سؤال کوتاه درباره‌ی تجربه‌هایی که تا امروز داشته‌اید. لازم نیست چیزی را که نمی‌خواهید اینجا بگویید؛ هر سؤال گزینه‌ای برای نگفتن یا حضوری گفتن دارد.',
+  items:[
+    M('p1','تا امروز کدام‌یک از این‌ها را تجربه کرده‌اید؟',PAST_ACTS,[5,6],'(هر چند مورد که درست است)'),
+    C('h4','از گذشته چیزی هست که هنوز روی راحتی‌تان در صمیمیت اثر بگذارد؟',["نه","کمی","بله، و دوست دارم درباره‌اش حرف بزنیم","بله، ولی فعلاً نمی‌خواهم بگویم"])
+  ]},
+
+{ title:'خیال‌پردازی‌ها',
+  src:'برگرفته از پرسشنامه‌ی فانتزی جنسی ویلسون (Wilson Sex Fantasy Questionnaire؛ Wilson, 1978/1988) با چهار خوشه‌ی صمیمانه، تجربه‌جویانه، غیرشخصی و قدرت/کنترل. متن گویه‌ها تطبیق‌یافته است.',
+  lead:'برای هر مورد بگویید چقدر درباره‌اش خیال‌پردازی می‌کنید. داشتن یک فانتزی به معنای خواستن آن در واقعیت نیست. همه‌ی موارد فقط در چارچوب توافق و رضایت دوطرفه معنا دارند.',
+  items:[
+    W('w1','بوسیدن عاشقانه و پرشور','fI'),
+    W('w2','رابطه‌ی جنسی با کسی که دوستش دارم، در فضایی عاشقانه (مثلاً طبیعت یا سفر)','fI'),
+    W('w3','رابطه‌ی دهانی–تناسلی','fI'),
+    W('w4','لمس و نوازش جنسی متقابل','fI'),
+    W('w8','امتحان کردن وضعیت‌ها و روش‌های کاملاً تازه','fE'),
+    W('w11','دیدن فیلم یا عکس‌های جنسی','fP'),
+    W('w12','لباس یا اشیای خاصی که برایم تحریک‌کننده‌اند (مثلاً لباس زیر یا پوشش خاص)','fP'),
+    W('w13','بستن دست‌های شریک (با توافق)','fS'),
+    W('w14','بسته شدن دست‌های خودم توسط شریک (با توافق)','fS'),
+    W('w15','سیلی یا ضربه‌ی سبک به‌عنوان بخشی از بازی (با توافق)','fS'),
+  ]},
+
+{ title:'ارتباط، رضایت و مرزها',
+  src:'الهام‌گرفته از مقیاس ارتباط جنسی زوجین (Dyadic Sexual Communication Scale؛ Catania, 1986). چند گویه درباره‌ی رضایت و مرزها به آن اضافه شده که استاندارد نیستند.',
+  lead:'',
+  items:[
+    A('m1','من و شریکم می‌توانیم آزادانه درباره‌ی رابطه‌ی جنسی حرف بزنیم.','dsc'),
+    A('m2','صحبت درباره‌ی مسائل جنسی با شریکم برایم ناراحت‌کننده است.','dsc',true),
+    A('m3','از نحوه‌ی گفت‌وگوی جنسی‌مان رضایت دارم.','dsc'),
+    A('m4','می‌توانم بدون خجالت بگویم چه چیزی را دوست دارم و چه چیزی را نه.','dsc'),
+    A('m5','می‌توانم بدون احساس گناه به شریکم «نه» بگویم.','dsc'),
+    A('m6','اگر وسط یک تجربه نظرم عوض شود، می‌توانم آن را متوقف کنم.','dsc'),
+    A('m7','برایم مهم است که هیچ‌کداممان از سر وظیفه یا فشار موافقت نکنیم.'),
+  ]},
+
+{ title:'پرسش‌های توصیفی', src:'',
+  lead:'چند سؤال باز؛ هر چه دوست دارید بنویسید. خالی گذاشتن هم اشکالی ندارد.',
+  items:[
+    T('t1','چه چیزی در صمیمیت جسمی بیش از همه برایتان لذت‌بخش است؟',true),
+    T('t2','خط قرمزهای شما چیست (چیزهایی که هرگز نمی‌خواهید)؟',true),
+    T('t3','چه نگرانی یا ترسی درباره‌ی رابطه‌ی جنسی یا صمیمیت دارید؟',true),
+  ]}
+];
+
+/* شماره‌گذاری سراسری */
+let _n = 0; S.forEach(s => s.items.forEach(it => it.n = ++_n));
+const ALL = S.flatMap(s => s.items);
+const COUNTABLE = ALL.filter(x => x.t !== 'text');
+
+/* ============ وضعیت ============ */
+const answers = {};
+const quiz = document.getElementById('quiz');
+
+/* ============ ساخت رابط ============ */
+function pillGroup(name, labels, values, selected, cls, showNum){
+  const g = el('div', cls);
+  labels.forEach((lab, i) => {
+    const v = values[i];
+    const l = el('label', 'pill' + (selected === v ? ' on' : ''));
+    const inp = document.createElement('input');
+    inp.type = 'radio'; inp.name = name; inp.value = v; inp.checked = selected === v;
+    l.append(inp);
+    if (showNum){ l.append(el('b', '', fa(v))); }
+    l.append(el('span', '', lab));
+    g.append(l);
+  });
+  return g;
+}
+function optList(name, opts, selected, multi){
+  const g = el('div', 'opts');
+  opts.forEach((o, i) => {
+    const on = multi ? (selected || []).includes(i) : selected === i;
+    const l = el('label', 'opt' + (multi ? ' chk' : '') + (on ? ' on' : ''));
+    const inp = document.createElement('input');
+    inp.type = multi ? 'checkbox' : 'radio'; inp.name = name; inp.value = i; inp.checked = on;
+    l.append(inp, el('span', '', o));
+    g.append(l);
+  });
+  return g;
+}
+function renderItem(it){
+  const box = el('div', 'q' + (it.t === 'fant' ? ' fant' : ''));
+  box.id = 'q-' + it.id;
+  const q = el('div', 'q-text', fa(it.n) + '. ' + it.q);
+  if (it.note) q.append(el('small', '', it.note));
+  box.append(q);
+  const a = answers[it.id];
+  if (['agree','freq','level'].includes(it.t)){
+    box.append(pillGroup(it.id, SC[it.t], [1,2,3,4,5], a, 'scale5', true));
+  } else if (it.t === 'choice'){
+    box.append(optList(it.id, it.opts, a, false));
+  } else if (it.t === 'multi'){
+    box.append(optList(it.id, it.opts, a, true));
+  } else if (it.t === 'text'){
+    const inp = it.area ? document.createElement('textarea') : document.createElement('input');
+    if (!it.area) inp.type = 'text';
+    inp.name = it.id; inp.value = a || '';
+    box.append(inp);
+  } else if (it.t === 'fant'){
+    box.append(el('div', 'sub-label', 'چقدر درباره‌اش خیال‌پردازی می‌کنید؟'));
+    box.append(pillGroup(it.id + '__f', FANT_FREQ, [0,1,2,3,4,5], a && a.f, 'scale6', false));
+  }
+  return box;
+}
+function render(){
+  quiz.replaceChildren();
+  S.forEach(s => {
+    if (s.lead) quiz.append(el('p', 'lead', s.lead));
+    s.items.forEach(it => quiz.append(renderItem(it)));
+  });
+  updateProgress();
+}
+function renderSources(){
+  const box = document.getElementById('srcList');
+  S.filter(s => s.src && s.items.length).forEach(s => {
+    const p = el('p');
+    const a = s.items[0].n, b = s.items[s.items.length - 1].n;
+    p.append(el('b', '', s.title + ' (سؤال‌های ' + fa(a) + ' تا ' + fa(b) + '): '), document.createTextNode(s.src));
+    box.append(p);
+  });
+}
+
+/* ============ ثبت پاسخ ============ */
+quiz.addEventListener('change', e => {
+  const inp = e.target; if (!inp.name) return;
+  const [id, part] = inp.name.split('__');
+  const it = ALL.find(x => x.id === id); if (!it) return;
+  if (it.t === 'fant'){
+    const a = answers[id] = answers[id] || {};
+    a[part] = Number(inp.value);
+  } else if (it.t === 'multi'){
+    const v = Number(inp.value);
+    let set = new Set(answers[id] || []);
+    if (inp.checked){
+      if (it.excl.includes(v)) set = new Set([v]);            // «هیچ‌کدام» یا «حضوری» بقیه را برمی‌دارد
+      else { it.excl.forEach(x => set.delete(x)); set.add(v); }
+    } else set.delete(v);
+    if (set.size) answers[id] = [...set].sort((x,y) => x - y); else delete answers[id];
+    document.querySelectorAll('input[name="' + inp.name + '"]').forEach(x => x.checked = set.has(Number(x.value)));
+  } else if (it.t !== 'text'){
+    answers[id] = Number(inp.value);
+  }
+  /* هایلایت گزینه‌ها */
+  document.querySelectorAll('input[name="' + inp.name + '"]').forEach(x => x.parentElement.classList.toggle('on', x.checked));
+  if (isDone(it)) document.getElementById('q-' + id).classList.remove('missing');
+  updateProgress();
+});
+quiz.addEventListener('input', e => {
+  const inp = e.target;
+  if (inp.type === 'text' || inp.tagName === 'TEXTAREA'){ answers[inp.name] = inp.value; }
+});
+
+function isDone(it){
+  const a = answers[it.id];
+  if (it.t === 'text') return false;                       // متن‌ها در پیشرفت شمرده نمی‌شوند
+  if (it.t === 'multi') return Array.isArray(a) && a.length > 0;
+  if (it.t === 'fant') return !!a && a.f !== undefined;
+  return a !== undefined && a !== null;
+}
+function updateProgress(){
+  const done = COUNTABLE.filter(isDone).length;
+  document.getElementById('progress').style.width = (done / COUNTABLE.length * 100) + '%';
+  document.getElementById('progressText').textContent = fa(done) + ' از ' + fa(COUNTABLE.length) + ' سؤال چندگزینه‌ای پاسخ داده شده (پرسش‌های متنی اختیاری‌اند)';
+}
+function showMissing(){
+  const miss = COUNTABLE.filter(x => !isDone(x));
+  miss.forEach(x => document.getElementById('q-' + x.id).classList.add('missing'));
+  if (miss.length) document.getElementById('q-' + miss[0].id).scrollIntoView({block:'start'});
+}
+
+/* ============ امتیازدهی ============ */
+function scores(ans){
+  const acc = {};
+  const push = (k, v) => { (acc[k] = acc[k] || []).push(v); };
+  ALL.forEach(it => {
+    const a = ans[it.id]; if (a === undefined || a === null) return;
+    if (it.t === 'fant'){ if (a.f === undefined) return; push(it.sub, a.f); push('fT', a.f); }
+    else if (it.sub && ['agree','freq','level'].includes(it.t)) push(it.sub, it.rev ? 6 - a : a);
+  });
+  const out = {};
+  Object.keys(acc).forEach(k => out[k] = acc[k].reduce((x,y) => x + y, 0) / acc[k].length);
+  return out;
+}
+
+/* ============ برچسب پاسخ ============ */
+function label(it, a){
+  if (a === undefined || a === null || a === '') return 'بدون پاسخ';
+  if (['agree','freq','level'].includes(it.t)) return fa(a) + ' — ' + SC[it.t][a - 1];
+  if (it.t === 'choice') return it.opts[a] ?? 'بدون پاسخ';
+  if (it.t === 'multi') return Array.isArray(a) && a.length ? a.map(i => it.opts[i]).join('، ') : 'بدون پاسخ';
+  if (it.t === 'text') return String(a).trim() || 'بدون پاسخ';
+  if (it.t === 'fant'){
+    const f = a.f !== undefined ? FANT_FREQ[a.f] : 'بدون پاسخ';
+    return 'خیال‌پردازی: ' + f;
+  }
+  return String(a);
+}
+
+/* ============ ساخت متن خروجی ============ */
+function buildText(){
+  const name = (answers.name || '').trim();
+  let o = 'پرسشنامه شناخت متقابل زوجین\n============================\n';
+  o += 'نام: ' + (name || 'بدون نام') + '\n';
+  o += 'تاریخ ثبت: ' + new Date().toLocaleDateString('fa-IR') + '\n';
+  o += '\n### پاسخ‌ها\n';
+  ALL.forEach(it => { o += '\n' + it.n + '. ' + it.q + '\n   پاسخ: ' + label(it, answers[it.id]).replace(/\n/g, '\n   ') + '\n'; });
+  const sc = scores(answers);
+  o += '\n\n### خلاصه‌ی نمرات (میانگین)\n';
+  Object.keys(SUBS).forEach(k => { if (sc[k] !== undefined) o += SUBS[k][0] + ': ' + fa(sc[k].toFixed(2)) + ' از ' + fa(SUBS[k][2]) + '\n'; });
+  o += '\nتوجه: این نمرات ابزار تشخیصی نیستند و فقط برای مقایسه و شروع گفت‌وگو ساخته شده‌اند.\n';
+  o += '\n--- بخش زیر برای مقایسه‌ی خودکار است؛ لطفاً تغییرش ندهید ---\n';
+  o += '<<DATA>>' + JSON.stringify({v:3, name, answers}) + '<<END>>\n';
+  return o;
+}
+function setStatus(msg){ const s = document.getElementById('status'); s.textContent = msg; clearTimeout(setStatus.t); setStatus.t = setTimeout(() => s.textContent = '', 5000); }
+function download(name, text){
+  const blob = new Blob(['\uFEFF' + text], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = name;
+  document.body.append(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+}
+document.getElementById('saveBtn').onclick = () => {
+  const missing = COUNTABLE.length - COUNTABLE.filter(isDone).length;
+  if (missing > 0 && !confirm(fa(missing) + ' سؤال بی‌پاسخ مانده است. باز هم ذخیره شود؟\n(با «لغو» به اولین سؤال بی‌پاسخ می‌روید.)')){ showMissing(); return; }
+  if (!(answers.name || '').trim()){ const p = (prompt('نام یا نام مستعار شما برای نام‌گذاری فایل (اختیاری):') || '').trim(); if (p) answers.name = p; }
+  const nm = (answers.name || '').trim().replace(/[\\/:*?"<>|]/g, '') || 'پاسخ';
+  download('پرسشنامه-' + nm + '-' + new Date().toISOString().slice(0,10) + '.txt', buildText());
+  setStatus('فایل آماده شد و ذخیره می‌شود.');
+};
+document.getElementById('copyBtn').onclick = async () => {
+  try { await navigator.clipboard.writeText(buildText()); setStatus('پاسخ‌ها کپی شدند.'); }
+  catch(e){ setStatus('کپی خودکار ممکن نیست؛ از «ذخیره در فایل» استفاده کنید.'); }
+};
+document.getElementById('clearBtn').onclick = () => {
+  if (!confirm('همه‌ی پاسخ‌ها پاک شوند؟')) return;
+  Object.keys(answers).forEach(k => delete answers[k]);
+  render(); window.scrollTo({top:0}); setStatus('همه‌ی پاسخ‌ها پاک شدند.');
+};
+window.addEventListener('beforeunload', e => { if (Object.keys(answers).length){ e.preventDefault(); e.returnValue = ''; } });
+
+/* ============ حالت‌ها ============ */
+function mode(m){
+  const fill = m === 'fill';
+  document.getElementById('viewFill').classList.toggle('hidden', !fill);
+  document.getElementById('viewCmp').classList.toggle('hidden', fill);
+  document.getElementById('dock').classList.toggle('hidden', !fill);
+  document.getElementById('tabFill').setAttribute('aria-selected', fill);
+  document.getElementById('tabCmp').setAttribute('aria-selected', !fill);
+  window.scrollTo({top:0});
+}
+document.getElementById('tabFill').onclick = () => mode('fill');
+document.getElementById('tabCmp').onclick = () => mode('cmp');
+
+/* ============ مقایسه ============ */
+const readFile = f => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsText(f); });
+function parseData(txt){
+  const m = txt.match(/<<DATA>>([\s\S]*?)<<END>>/);
+  if (!m) throw new Error('bad');
+  const d = JSON.parse(m[1]); if (!d.answers) throw new Error('bad'); return d;
+}
+const shortAns = (it, a) => label(it, a);
+
+document.getElementById('runCmp').onclick = async () => {
+  const st = document.getElementById('cmpStatus');
+  const fa_ = document.getElementById('fileA').files[0], fb_ = document.getElementById('fileB').files[0];
+  if (!fa_ || !fb_){ st.textContent = 'هر دو فایل را انتخاب کنید.'; return; }
+  let A_, B_;
+  try { A_ = parseData(await readFile(fa_)); B_ = parseData(await readFile(fb_)); }
+  catch(e){ st.textContent = 'یکی از فایل‌ها معتبر نیست. فقط فایل‌هایی را انتخاب کنید که از همین پرسشنامه ذخیره شده‌اند و ویرایش نشده‌اند.'; return; }
+  st.textContent = ((A_.v || 2) !== (B_.v || 2)) ? 'این دو فایل از دو نسخه‌ی متفاوت پرسشنامه‌اند؛ فقط سؤال‌های مشترک مقایسه می‌شوند.' : '';
+  buildReport(A_, B_);
+};
+
+function buildReport(A_, B_){
+  let nA = A_.name || 'نفر اول', nB = B_.name || 'نفر دوم';
+  if (nA === nB){ nA += ' (۱)'; nB += ' (۲)'; }
+  const sa = scores(A_.answers), sb = scores(B_.answers);
+  const R = document.getElementById('report');
+  let h = '';
+
+  /* شباهت کلی */
+  const rows = [];
+  Object.keys(SUBS).forEach(k => {
+    if (sa[k] === undefined || sb[k] === undefined) return;
+    const range = SUBS[k][2] - SUBS[k][1];
+    const sim = Math.round((1 - Math.abs(sa[k] - sb[k]) / range) * 100);
+    rows.push({k, a: sa[k], b: sb[k], sim});
+  });
+  const main = rows.filter(r => r.k !== 'fT');
+  const overall = main.length ? Math.round(main.reduce((s, r) => s + r.sim, 0) / main.length) : 0;
+  h += '<div class="sheet"><h2>خلاصه</h2><div class="big">' + fa(overall) + '٪</div>' +
+       '<p class="small">میانگین شباهت نمره‌ی ' + fa(main.length) + ' زیرمقیاس میان «' + esc(nA) + '» و «' + esc(nB) + '». شباهت زیاد لزوماً یعنی «سازگاری» نیست و تفاوت هم لزوماً مشکل نیست؛ مهم این است که درباره‌ی تفاوت‌ها با هم صحبت کنید.</p></div>';
+
+  h += '<div class="sheet"><h2>مقایسه‌ی زیرمقیاس‌ها</h2><table><tr><th>حوزه</th><th>' + esc(nA) + '</th><th>' + esc(nB) + '</th><th>شباهت</th></tr>';
+  rows.forEach(r => {
+    h += '<tr><td>' + esc(SUBS[r.k][0]) + '</td><td>' + fa(r.a.toFixed(1)) + '</td><td>' + fa(r.b.toFixed(1)) + '</td>' +
+         '<td><div class="meter"><i style="width:' + r.sim + '%"></i></div><span class="small">' + fa(r.sim) + '٪</span></td></tr>';
+  });
+  h += '</table></div>';
+
+  /* تفاوت‌های بزرگ در سؤال‌های مقیاسی */
+  const big = [];
+  ALL.forEach(it => {
+    if (!['agree','freq','level'].includes(it.t)) return;
+    const a = A_.answers[it.id], b = B_.answers[it.id];
+    if (a === undefined || b === undefined) return;
+    if (Math.abs(a - b) >= 2) big.push({it, a, b});
+  });
+  h += '<div class="sheet"><h2>جاهایی که نظرتان فاصله‌ی زیادی دارد</h2>';
+  if (!big.length) h += '<p>هیچ سؤال مقیاسی با فاصله‌ی دو درجه یا بیشتر پیدا نشد.</p>';
+  big.forEach(x => {
+    h += '<div class="diffitem"><div><b>' + fa(x.it.n) + '.</b> ' + esc(x.it.q) + '</div><div class="two"><div><b>' + esc(nA) + ':</b> ' + esc(shortAns(x.it, x.a)) + '</div><div><b>' + esc(nB) + ':</b> ' + esc(shortAns(x.it, x.b)) + '</div></div></div>';
+  });
+  h += '</div>';
+
+  /* سؤال‌های چندگزینه‌ای */
+  const same = [], diff = [];
+  ALL.forEach(it => {
+    if (!['choice','multi'].includes(it.t) || it.cmp === false) return;
+    const a = A_.answers[it.id], b = B_.answers[it.id];
+    if (a === undefined || b === undefined) return;
+    const eq = JSON.stringify(a) === JSON.stringify(b);
+    (eq ? same : diff).push({it, a, b});
+  });
+  h += '<div class="sheet"><h2>پاسخ‌های چندگزینه‌ای</h2><p class="small">' + fa(same.length) + ' مورد یکسان، ' + fa(diff.length) + ' مورد متفاوت.</p>';
+  h += '<details open><summary>موارد متفاوت (' + fa(diff.length) + ')</summary>';
+  diff.forEach(x => {
+    h += '<div class="diffitem"><div><b>' + fa(x.it.n) + '.</b> ' + esc(x.it.q) + '</div><div class="two"><div><b>' + esc(nA) + ':</b> ' + esc(shortAns(x.it, x.a)) + '</div><div><b>' + esc(nB) + ':</b> ' + esc(shortAns(x.it, x.b)) + '</div></div></div>';
+  });
+  h += '</details><details><summary>موارد یکسان (' + fa(same.length) + ')</summary>';
+  same.forEach(x => { h += '<div class="diffitem"><b>' + fa(x.it.n) + '.</b> ' + esc(x.it.q) + '<br><span class="tag ok">هر دو:</span> ' + esc(shortAns(x.it, x.a)) + '</div>'; });
+  h += '</details></div>';
+
+  /* پاسخ‌های توصیفی */
+  h += '<div class="sheet"><h2>پاسخ‌های توصیفی</h2>';
+  ALL.filter(x => x.t === 'text' && x.cmp !== false).forEach(it => {
+    const a = (A_.answers[it.id] || '').trim(), b = (B_.answers[it.id] || '').trim();
+    if (!a && !b) return;
+    h += '<div class="diffitem"><div><b>' + esc(it.q) + '</b></div><div class="two"><div><b>' + esc(nA) + ':</b>\n' + esc(a || '—') + '</div><div><b>' + esc(nB) + ':</b>\n' + esc(b || '—') + '</div></div></div>';
+  });
+  h += '</div>';
+
+  R.innerHTML = h;
+  document.getElementById('saveRep').classList.remove('hidden');
+  R.scrollIntoView({behavior:'smooth'});
+}
+document.getElementById('saveRep').onclick = () => {
+  const txt = 'گزارش مقایسه\n=============\n\n' + document.getElementById('report').innerText;
+  download('گزارش-مقایسه-' + new Date().toISOString().slice(0,10) + '.txt', txt);
+};
+
+renderSources();
+render();
+</script>
+</body>
+</html>
