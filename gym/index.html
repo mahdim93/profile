@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>My Gym Plan</title>
-<meta name="description" content="Evidence-based 12-week program: 3-day gym split, home days, nutrition, supplements, demo videos and sources.">
+<meta name="description" content="Revised 12-week training plan for natural-physique recomposition: three gym days, complementary home activity, nutrition tracking and elbow-aware exercise notes.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#ECEFF1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0E1114" media="(prefers-color-scheme: dark)">
@@ -151,10 +151,10 @@ footer p{margin:8px 0;max-width:80ch}
       <h1>My Gym Plan</h1>
     </div>
     <dl class="facts">
-      <div><dt>Goal</dt><dd>Muscle + less belly fat</dd></div>
+      <div><dt>Goal</dt><dd>Natural physique · recomposition</dd></div>
       <div><dt>Gym</dt><dd>Mon · Thu · Sat</dd></div>
       <div><dt>Home</dt><dd>Wed · Fri · Sun</dd></div>
-      <div><dt>Daily</dt><dd>150 g protein · 8–10k steps</dd></div>
+      <div><dt>Daily</dt><dd>140–160 g protein · 8–10k steps</dd></div>
     </dl>
     <div class="now" id="now"></div>
   </header>
@@ -178,9 +178,9 @@ const WEEK=Math.floor((Date.now()-START)/(7*864e5))+1;
 const BLOCK=[
  {w:"1",name:"Intro",rir:"3",text:"Find your working weights. Stop every set with 3 reps left. Learn the technique from the videos."},
  {w:"2–5",name:"Build",rir:"1–2",text:"Full sets. Add weight whenever you hit every rep at RIR 1–2."},
- {w:"6",name:"Deload",rir:"4",text:"Same weights, half the sets, easy effort. Let joints and the elbow recover."},
- {w:"7–11",name:"Push",rir:"0–2",text:"Compounds RIR 1–2. Last set of each isolation exercise to RIR 0–1."},
- {w:"12",name:"Deload + test",rir:"4",text:"Half the sets. Measure weight, waist and photos; we plan block 2 from these."}
+ {w:"6",name:"Deload if needed",rir:"4",text:"Reduce sets and/or load if fatigue is accumulating. A deload can be moved earlier when performance, recovery or joint tolerance deteriorates."},
+ {w:"7–11",name:"Progress",rir:"1–3",text:"Progress reps or load when technique and target RIR are met. Keep most sets 1–3 reps from failure; failure is optional on safe isolation exercises."},
+ {w:"12",name:"Deload + review",rir:"4",text:"Reduce sets and effort. Review weight trend, waist, photos, performance and elbow response; do not test maximal lifts."}
 ];
 const phaseOf=w=>w<=1?0:w<=5?1:w===6?2:w<=11?3:4;
 const PH = WEEK>=1&&WEEK<=12 ? BLOCK[phaseOf(WEEK)] : null;
@@ -203,20 +203,18 @@ const WARM="<strong>Warm-up, 10 min:</strong> 5 min easy bike, then ramp-up sets
 const fin=(ex,name,dose,detail,cue)=>({ex,name,sets:[dose],meta:detail,tag:"g",fin:true,cue});
 const DAYS=[
  {key:"mon",short:"Mon",day:"Monday",kind:"gym",label:"Gym",title:"Gym A",sub:"Chest · biceps · side delts",notes:[WARM],items:[
-  {ex:"bench",name:"Barbell bench press",sets:[6,8,10,12],rest:"2–3 min",tag:"r",swap:"Machine chest press, same sets, stop before lockout.",cue:"Shoulder blades back and down, feet planted. Bar to mid-chest, press up and slightly back."},
-  {ex:"incline_bench",name:"Incline barbell press",sets:[6,8,10,12],rest:"2–3 min",tag:"r",swap:"Incline machine press, light.",cue:"Bench at 30°. Bar touches the upper chest, elbows about 45° from the body."},
-  {ex:"db_bench",name:"Flat dumbbell press",sets:[8,10,12],rest:"90 s",tag:"y",cue:"Lower until a comfortable stretch, press up in a slight arc."},
+  {ex:"bench",name:"Barbell bench press",sets:[6,8,10,12],rest:"2–3 min",tag:"y",swap:"Press in a comfortable range; don't force lockout. Machine chest press if the bar feels awkward.",cue:"Shoulder blades back and down, feet planted. Bar to mid-chest, press up and slightly back."},
+  {ex:"incline_bench",name:"Incline barbell press",sets:[6,8,10,12],rest:"2–3 min",tag:"y",swap:"Comfortable range; don't force lockout.",cue:"Bench at 30°. Bar touches the upper chest, elbows about 45° from the body."},
   {ex:"incline_db",name:"Incline dumbbell press",sets:[8,10,12],rest:"90 s",tag:"y",cue:"Bench at 30°, controlled lowering, no clanking at the top."},
   {ex:"pec_deck",name:"Pec deck",sets:[10,12,15],rest:"75 s",tag:"y",cue:"Fixed soft elbow, full stretch, squeeze 1 s with the handles together."},
   {ex:"crossover",name:"Cable crossover",sets:[10,12,15],rest:"75 s",tag:"y",cue:"Step forward, slight lean, bring the handles together in front of the lower chest."},
-  {ex:"preacher",name:"Barbell preacher curl",sets:[6,8,10,12],rest:"75 s",tag:"r",swap:"Skip until cleared: the bottom position stretches the elbow under load. Do one extra set of hammer curls instead.",cue:"Armpits on the pad. Lower slowly, stop just short of a locked elbow."},
-  {ex:"db_curl",name:"Dumbbell curl",sets:[8,10,12],rest:"60 s",tag:"y",swap:"Light weight, pain-free range only.",cue:"Elbows pinned to your sides, no swinging, palms turn up as you curl."},
-  {ex:"hammer",name:"Hammer curl",sets:[10,12,12],rest:"60 s",tag:"y",why:"Neutral grip: usually the most elbow-friendly curl.",cue:"Thumbs up, elbows still, curl to shoulder height, lower over 2 s."},
+  {ex:"db_curl",name:"Dumbbell curl",sets:[8,10],rest:"60–90 s",tag:"y",swap:"Use a comfortable range and controlled load; stop if symptoms increase.",cue:"Elbows pinned to your sides, no swinging, palms turn up as you curl."},
+  {ex:"hammer",name:"Hammer curl",sets:[10,12],rest:"60–90 s",tag:"y",why:"Neutral grip may feel comfortable for some lifters; use your own symptom response.",cue:"Thumbs up, elbows still, curl to shoulder height, lower over 2 s."},
   {ex:"lat_raise",name:"Lateral raise",sets:[12,15,15],rest:"60 s",tag:"y",cue:"Light dumbbells, lead with the elbows up to shoulder height, 2 s down."},
   fin("bike","Easy bike","5 min","Zone 2","Cool-down. Cycling interferes less with muscle growth than running.")
  ]},
  {key:"tue",short:"Tue",day:"Tuesday",kind:"rest",label:"Rest",title:"Rest",sub:"Dutch class",notes:["Rest from training. Reach 8,000–10,000 steps and do your physio exercises (see <strong>Elbow</strong>). Take creatine as usual."],items:[]},
- {key:"wed",short:"Wed",day:"Wednesday",kind:"home",label:"Home",title:"Home A",sub:"Legs · calves · abs · intervals",notes:["Bodyweight only, no equipment needed. Do the exercises in order, then the intervals."],items:[
+ {key:"wed",short:"Wed",day:"Wednesday",kind:"home",label:"Home",title:"Home A",sub:"Legs · calves · abs · intervals",notes:["Bodyweight session. Use a controlled 2–3 s lowering phase and a challenging variation; stop with 1–3 good reps in reserve. If sets become easy at the top of the rep range, progress the variation or add a backpack load if safe."],items:[
   {ex:"split_squat",name:"Bulgarian split squat",sets:[12,15,15],rest:"60 s",unit:"/ leg",tag:"g",cue:"Rear foot on a chair or sofa. Drop the back knee straight down. Slow 3 s lowering makes bodyweight hard enough."},
   {ex:"bw_squat",name:"Bodyweight squat",sets:[20,20,25],rest:"60 s",tag:"g",cue:"3 s down, 1 s pause at the bottom, stand up fast."},
   {ex:"sl_bridge",name:"Single-leg glute bridge",sets:[12,15,15],rest:"45 s",unit:"/ leg",tag:"g",cue:"One foot planted, other leg straight. Hips rise level, 2 s squeeze at the top."},
@@ -225,24 +223,20 @@ const DAYS=[
     fin("stairs","Intervals: stairs or uphill","6 × 30 s","60 s easy between","Hard but controlled. Max two hard interval sessions a week.")
  ]},
  {key:"thu",short:"Thu",day:"Thursday",kind:"gym",label:"Gym",title:"Gym B",sub:"Back · triceps · rear delts",notes:[WARM],items:[
-  {ex:"pullup",name:"Pull-up (assisted if needed)",sets:[6,8,10,12],rest:"2–3 min",tag:"r",swap:"Lat pulldown, neutral grip. Hanging loads the elbow at full stretch.",cue:"Pull the chest toward the bar, elbows down and back. Use the assisted machine to hit the reps."},
-  {ex:"row",name:"Bent-over barbell row",sets:[6,8,10,12],rest:"2–3 min",tag:"y",swap:"If gripping the bar hurts: chest-supported machine row.",cue:"Hinge to 45°, flat back. Pull to the belly button, lower with control."},
-  {ex:"pulldown",name:"Lat pulldown, neutral grip",sets:[8,10,12],rest:"90 s",tag:"y",cue:"Slight lean back, full stretch at the top, pull to the upper chest."},
+  {ex:"pullup",name:"Pull-up (assisted if needed)",sets:[6,8,10],rest:"2–3 min",tag:"y",swap:"Neutral-grip lat pulldown if hanging or the bottom position is uncomfortable.",cue:"Pull the chest toward the bar, elbows down and back. Use the assisted machine to hit the reps."},
+  {ex:"row",name:"Bent-over barbell row",sets:[6,8,10],rest:"2–3 min",tag:"y",swap:"If gripping the bar hurts: chest-supported machine row.",cue:"Hinge to 45°, flat back. Pull to the belly button, lower with control."},
+  {ex:"pulldown",name:"Lat pulldown, neutral grip",sets:[8,10,12],rest:"90 s",tag:"y",cue:"Slight lean back, pull to the upper chest, and use only a comfortable shoulder and elbow range."},
   {ex:"cable_row",name:"Seated cable row",sets:[8,10,12],rest:"90 s",tag:"y",cue:"Chest tall, pull to the navel, pause 1 s with shoulder blades squeezed."},
   {ex:"straight_arm",name:"Straight-arm cable pulldown",sets:[10,12,15],rest:"60 s",tag:"y",cue:"Arms almost straight, sweep the bar from eye level to the thighs using the lats."},
   {ex:"face_pull",name:"Face pull",sets:[12,15,15],rest:"60 s",tag:"y",cue:"Rope at face height, pull toward the forehead, elbows high."},
-  {ex:"pushdown",name:"Cable triceps pushdown",sets:[6,8,10,12],rest:"75 s",tag:"y",swap:"Light weight, stop before the elbow locks.",cue:"Elbows pinned at your sides, push down, squeeze 1 s."},
-  {ex:"oh_ext",name:"Overhead cable triceps extension",sets:[8,10,12],rest:"75 s",tag:"r",why:"Overhead work grew ~40% more triceps than arms-down in a 12-week study.",swap:"Needs a deep elbow bend under load. Do pushdowns instead until cleared.",cue:"Face away from the cable, elbows by your ears, lower behind the head, extend."},
-  {ex:"dip_machine",name:"Seated dip machine",sets:[10,12,12],rest:"75 s",tag:"r",swap:"Skip until cleared, or one more set of pushdowns.",cue:"Sit tall, press the handles down until arms are nearly straight."},
-  {ex:"rev_pushdown",name:"Reverse-grip pushdown",sets:[6,8,10],rest:"60 s",tag:"y",cue:"Palms up on a straight bar, elbows fixed. Lighter than the normal pushdown."},
+  {ex:"pushdown",name:"Cable triceps pushdown",sets:[8,10,12],rest:"75–90 s",tag:"y",swap:"Use a comfortable range; do not force lockout.",cue:"Elbows pinned at your sides, push down, squeeze 1 s."},
+  {ex:"oh_ext",name:"Overhead cable triceps extension",sets:[8,10,12],rest:"75 s",tag:"y",why:"Overhead work grew ~40% more triceps than arms-down in a 12-week study.",swap:"Stop the stretch where it's comfortable; your extension is still limited.",cue:"Face away from the cable, elbows by your ears, lower behind the head, extend."},
   fin("bike","Easy bike","5 min","Zone 2","Cool-down.")
  ]},
- {key:"fri",short:"Fri",day:"Friday",kind:"home",label:"Home",title:"Home B",sub:"Abs · calves · grip · cardio",notes:["Bodyweight only. Easy day: Saturday is leg day."],items:[
+ {key:"fri",short:"Fri",day:"Friday",kind:"home",label:"Home",title:"Home B",sub:"Abs · calves · grip · cardio",notes:["Easy session: Saturday is leg day. Keep core work controlled, grip work optional, and cardio conversational so it does not impair Saturday performance."],items:[
   {ex:"rev_crunch",name:"Reverse crunch",sets:[12,15,15],rest:"45 s",tag:"g",cue:"Curl the hips toward the chest, lower over 3 seconds."},
-  {ex:"crunch",name:"Crunch",sets:[15,15,20],rest:"45 s",tag:"g",cue:"Slow, exhale at the top."},
-  {ex:"flutter",name:"Flutter kicks",sets:[15,20,20],rest:"45 s",unit:"/ leg",tag:"g",cue:"Lower back stays pressed down."},
   {ex:"calf",name:"Calf raise on a step (both legs)",sets:[20,20,25],rest:"45 s",tag:"g",cue:"Full stretch, full rise, 1 s pause at the top."},
-  {ex:null,name:"Towel wring and grip squeeze",sets:[15,15,15],rest:"30 s",tag:"y",cue:"Forearm work without weights: wring a rolled towel both directions, then squeeze a soft ball. Doubles as elbow rehab with your physio's OK."},
+  {ex:null,name:"Towel wring and grip squeeze",sets:[15,15,15],rest:"30 s",tag:"y",cue:"Forearm work without weights: wring a rolled towel both directions, then squeeze a soft ball. This is optional general grip work, not a substitute for prescribed elbow rehabilitation. Keep it only if your physiotherapist agrees and it causes no symptom increase."},
   fin("walk_tm","Steady cardio: brisk walk or bike","20 min","Zone 2 · talk pace","Easy enough to hold a conversation.")
  ]},
  {key:"sat",short:"Sat",day:"Saturday",kind:"gym",label:"Gym",title:"Gym C",sub:"Legs · shoulders · traps",notes:[WARM.replace("5 min easy bike","5 min easy bike, leg swings")],items:[
@@ -251,15 +245,14 @@ const DAYS=[
   {ex:"rdl",name:"Romanian deadlift",sets:[8,10,12],rest:"2 min",tag:"y",swap:"If the grip pulls on the elbow: lifting straps, or 45° back extensions.",cue:"Soft knees, hips back, bar close to the legs, lower until a strong hamstring stretch."},
   {ex:"seated_curl",name:"Seated leg curl",sets:[6,8,10,12],rest:"90 s",tag:"g",why:"Seated curls grew more hamstring than lying curls (about 14% vs 9%).",cue:"Knee lined up with the pivot, curl fully, lower over 3 seconds."},
   {ex:"leg_ext",name:"Leg extension",sets:[10,12,15],rest:"75 s",tag:"g",cue:"Squeeze 1 s at full extension, lower over 3 s."},
-  {ex:"calf_machine",name:"Standing calf raise machine",sets:[6,8,10,12],rest:"60 s",tag:"g",why:"Heavy calf work here, since home calves are bodyweight only.",cue:"2 s pause in the stretch, full rise on the toes."},
+  {ex:"calf_machine",name:"Standing calf raise machine",sets:[8,10,12],rest:"60–90 s",tag:"g",why:"Heavy calf work here, since home calves are bodyweight only.",cue:"2 s pause in the stretch, full rise on the toes."},
   {ex:"shoulder_press",name:"Machine shoulder press",sets:[6,8,10],rest:"2 min",tag:"y",swap:"Light, stop before lockout.",cue:"Handles at shoulder height, press up without arching your back."},
   {ex:"lat_raise",name:"Lateral raise",sets:[8,10,12],rest:"60 s",tag:"y",cue:"Lead with the elbows, 2 s down."},
   {ex:"rear_fly",name:"Reverse pec deck (rear delts)",sets:[12,15,15],rest:"60 s",tag:"y",cue:"Chest on the pad, sweep the arms back to the shoulder line, soft elbows."},
   {ex:"shrug",name:"Dumbbell shrug",sets:[10,12,12],rest:"60 s",tag:"y",swap:"If holding dumbbells pulls on the elbow: shrug machine or Smith machine.",cue:"Shoulders straight up, 1 s squeeze, no rolling."}
  ]},
- {key:"sun",short:"Sun",day:"Sunday",kind:"home",label:"Home",title:"Home C",sub:"Long walk · abs · mobility",notes:["<strong>Weekly check-in:</strong> average morning weight, waist at the navel, lifts that went up, elbow pain (0–10) and range."],items:[
+ {key:"sun",short:"Sun",day:"Sunday",kind:"home",label:"Home",title:"Home C",sub:"Long walk · abs · mobility",notes:["<strong>Weekly check-in:</strong> average morning weight, waist at the navel, key lifts, sleep/recovery, and any elbow symptoms or change in range. Compare trends over 2–3 weeks rather than reacting to one weigh-in."],items:[
   fin(null,"Long walk or bike ride","30–35 min","Easy, outdoors","Conversational pace."),
-  {ex:"flutter",name:"Flutter kicks",sets:[15,20,20],rest:"45 s",unit:"/ leg",tag:"g",cue:"Lower back pressed down."},
   {ex:"hip_flexor",name:"Hip flexor stretch",sets:["2 × 30 s"],meta:"each side",tag:"g",cue:"Half-kneeling, tuck the pelvis, shift forward gently."},
   {ex:"ham_stretch",name:"Hamstring stretch",sets:["2 × 30 s"],meta:"each side",tag:"g",cue:"Lying down, towel around the foot so the arms stay relaxed."}
  ]},
@@ -273,10 +266,10 @@ const DAYS=[
 
 /* ---------- Info pages ---------- */
 const VOL=[
- ["Chest","Mon 20",20,"10–20"],["Back (lats, mid-back)","Thu 17 (+ face pulls)",18,"10–20"],["Quads","Sat 11 · Wed 6",17,"10–20"],
- ["Hamstrings","Sat 7 (+ bridges)",8,"10–20"],["Glutes","Sat 11 · Wed 9 (+ indirect)",20,"10–20"],["Side delts","Mon 3 · Sat 3 (+ presses)",8,"8–16"],
- ["Rear delts","Thu 3 · Sat 3 (+ rows)",13,"8–16"],["Biceps","Mon 10 (+ pulls)",17,"8–16"],["Triceps","Thu 13 (+ presses)",21,"8–16"],
- ["Calves","Sat 4 · Wed 4 · Fri 3",11,"8–16"],["Abs","Wed 3 · Fri 9 · Sun 3",15,"8–16"]
+ ["Chest","Mon 17",17,"10–20"],["Back (lats, mid-back)","Thu 15 (+ face pulls)",15,"10–20"],["Quads","Sat 11 · Wed 6",17,"10–16"],
+ ["Hamstrings","Sat 7 (+ bridges)",8,"8–12"],["Glutes","Sat 7 · Wed 9 (+ indirect)",16,"8–16"],["Side delts","Mon 3 · Sat 3 (+ presses)",8,"6–12"],
+ ["Rear delts","Thu 3 · Sat 3 (+ rows)",10,"6–12"],["Biceps","Mon 4 (+ pulls)",11,"8–16"],["Triceps","Thu 6 (+ presses)",14,"8–16"],
+ ["Calves","Sat 3 · Wed 4 · Fri 3",10,"6–12"],["Abs","Wed 3 · Fri 3",6,"4–8"]
 ];
 const volRows=VOL.map(([m,where,n,rng])=>{const [lo,hi]=rng.split("–").map(Number);return `<tr><td><b>${m}</b><div class="bar" aria-hidden="true"><span class="zone" style="left:${lo/24*100}%;right:${100-hi/24*100}%"></span><i style="width:${Math.min(n,24)/24*100}%"></i></div></td><td>${where}</td><td class="n">${n}</td><td class="n">${rng}</td></tr>`}).join("");
 const blockRows=BLOCK.map((b,i)=>`<li class="${PH&&phaseOf(WEEK)===i?"cur":""}"><div class="wk">Week ${b.w}</div><div><b>${b.name}</b> <span class="pill lo">RIR ${b.rir}</span><p>${b.text}</p></div></li>`).join("");
@@ -284,8 +277,8 @@ const PAGES={
 program:`
 <div class="panel">
   <h3>How the week is built</h3>
-  <p>Your three-day bro split, at full size: each gym day trains its muscles with 30+ hard sets in about 85–95 minutes, and each home day is bodyweight-only and under 45 minutes. Research finds growth from extra sets in one session tapers off above roughly 11 sets per muscle, so the last sets of a big day add less than the first ones. They still add something, and big sessions are how you like to train.</p>
-  <p>All gym sessions use your ascending-rep sets (6 · 8 · 10). Studies find this pyramid style builds the same muscle as straight sets, so it's a matter of preference.</p>
+  <p>This is a three-day gym split plus three complementary home/activity days. Chest and back days use five exercises for the main muscle (about 75 minutes); leg day stays the longest. Direct arm work stays modest because pressing and pulling already train the arms. The goal is productive, recoverable work—not maximizing the number of exercises. Treat weekly-set totals as estimates: indirect work and exercise effort vary by person.</p>
+  <p>The rep ladders are a way to organize working sets, not a requirement to increase weight every set. Keep technique consistent and rest long enough to perform well. If a ladder makes load or effort inconsistent, use a stable load across sets within the prescribed rep range.</p>
 </div>
 <div class="panel">
   <h3>12-week block</h3>
@@ -293,9 +286,9 @@ program:`
 </div>
 <div class="panel">
   <h3>Weekly hard sets per muscle</h3>
-  <p>Hard sets per week, counting indirect work as half a set. The dashed box shows the evidence-based range; above it, gains keep coming but more slowly.</p>
+  <p>Approximate weekly set estimates. Direct sets are easier to count than indirect work, so use these as planning guides rather than precise biological totals. Begin near the lower-to-middle part of the target range and add sets only when performance, recovery, and muscle-specific progress justify it.</p>
   <div class="tbl"><table><thead><tr><th>Muscle</th><th>Where</th><th>Sets</th><th>Target</th></tr></thead><tbody>${volRows}</tbody></table></div>
-  <p class="cite" style="margin-top:10px">Hamstrings are the one muscle below target: Romanian deadlifts and seated curls carry them, and block 2 adds a hamstring exercise. Chest, biceps and triceps sit at or above the top of the range; if recovery suffers (lifts dropping, joints aching), drop the last exercise for that muscle first.</p>
+  <p class="cite" style="margin-top:10px">Direct arm sets are deliberately few because presses and pulls also train the arms. If a muscle is not progressing after several weeks despite good effort, technique, nutrition, and recovery, add 1–2 weekly sets for that muscle and reassess. If performance declines or joint symptoms rise, remove accessory work first.</p>
 </div>
 <div class="grid2">
   <div class="panel"><h3>Progression rules</h3><ol class="plain">
@@ -305,20 +298,20 @@ program:`
     <li>Log your heaviest set in the kg box on each card.</li></ol></div>
   <div class="panel"><h3>Rest and effort</h3><ul class="plain">
     <li>Compound lifts: 2–3 minutes. Isolation: 60–90 seconds. Longer rests on big lifts support more growth.</li>
-    <li>Train close to failure: most sets end with 1–2 reps left. Muscle growth increases as sets get closer to failure.</li>
-    <li>Never grind out reps on red or yellow exercises.</li></ul></div>
+    <li>Most compound sets: finish with 1–3 good reps in reserve (RIR). Isolation sets usually finish with 1–2 RIR; failure is optional, not mandatory.</li>
+    <li>Do not grind reps or force end-range positions, particularly for movements that load your recovering elbow.</li></ul></div>
 </div>
 <div class="grid2">
   <div class="panel"><h3>Cardio and steps</h3><ul class="plain">
-    <li>8,000–10,000 steps a day: the range where health benefits level off for adults under 60.</li>
-    <li>Prefer cycling for intervals; running showed more interference with muscle growth.</li>
+    <li>Aim for 8,000–10,000 steps a day if practical; keep activity sustainable.</li>
+    <li>Keep intervals to at most 1–2 sessions weekly, and reduce them if they affect leg training or recovery.</li>
     <li>Do cardio after lifting or on home days, not before lifting.</li></ul></div>
   <div class="panel"><h3>Sleep</h3><p>7–9 hours. In a diet study, people sleeping 5.5 h instead of 8.5 h lost more muscle and less fat on the same calories.</p></div>
 </div>`,
 food:`
 <div class="panel">
   <h3>Daily targets</h3>
-  <p>A small calorie deficit with high protein lets you lose fat while still building muscle. Aim to lose 0.3–0.5 kg a week; slower loss protects muscle.</p>
+  <p>A small calorie deficit with high protein lets you lose fat while still building muscle. For recomposition, begin with a modest deficit. A useful initial pace is roughly 0.25–0.5% of body weight per week, but use the slower end if strength, recovery, or muscle gain are priorities. The calorie numbers below are starting estimates, not measured maintenance needs.</p>
   <div class="tbl"><table>
     <thead><tr><th>Target</th><th>Gym day</th><th>Home or rest day</th></tr></thead>
     <tbody>
@@ -329,7 +322,7 @@ food:`
       <tr><td>Water</td><td class="n">2.5–3 L</td><td class="n">2.5–3 L</td></tr>
     </tbody>
   </table></div>
-  <p class="cite" style="margin-top:10px">Protein is set at about 2.0–2.2 g per kg. That's the top of the general sports-nutrition range, because trained people in a deficit need more to keep their muscle.</p>
+  <p class="cite" style="margin-top:10px">Keep protein consistent at 140–160 g/day if that suits your current body weight and dietary needs. Adjust calories based on 2–3 weeks of average body weight, waist, performance and adherence; body weight alone cannot tell the whole recomposition story.</p>
 </div>
 <div class="panel">
   <h3>Sample day · ~2,150 kcal · ~155 g protein</h3>
@@ -353,8 +346,8 @@ food:`
     <li>Log food in an app for the first 2 weeks to learn portions.</li></ul></div>
   <div class="panel"><h3>When to adjust</h3><ul class="plain">
     <li>Weigh 3–4 mornings a week; use the weekly average.</li>
-    <li>No change in weight or waist for 3 weeks → eat 150–200 kcal less.</li>
-    <li>Losing more than 0.7 kg a week, or lifts dropping → eat 150–200 kcal more.</li></ul></div>
+    <li>No change in average weight or waist for 2–3 weeks → first check tracking consistency; if consistent, reduce by about 100–150 kcal/day or add a little activity.</li>
+    <li>Weight falling faster than about 0.5–0.75%/week, or performance/recovery declining → consider adding 100–200 kcal/day.</li></ul></div>
 </div>`,
 supps:`
 <div class="grid2" style="margin-top:0">
@@ -390,8 +383,8 @@ ${[
 elbow:`
 <div class="panel">
   <h3>Where you are</h3>
-  <p>Typical elbow-fracture rehab protocols restore range of motion first, add light resistance from about week 2–6, and progressively heavier resistance from about weeks 7–12, with return to full activity around 3–6 months. You're about 3 months in with range still limited, so loading the arm is reasonable, but heavy lockout and full-stretch lifts wait for your physio's clearance. That's why some exercises are red.</p>
-  <p><strong>Ask your physio:</strong> which yellow exercises you can start and at what weight · when red lifts are allowed · whether the bone is fully healed.</p>
+  <p>You report that your physiotherapist has cleared normal gym training and that loading currently causes no pain, but elbow extension remains limited. Keep training within the guidance you received; do not force full extension or a deep loaded stretch just to match an exercise cue. The tags on this page are general prompts, not medical clearance, and they do not override your physiotherapist's advice.</p>
+  <p><strong>Check with your physiotherapist:</strong> whether the remaining extension limit changes the range or loading for any specific lift, and which mobility work should remain part of your routine. If swelling, pain, stiffness, or loss of motion increases after training, modify the provoking exercise and seek their advice.</p>
 </div>
 <div class="panel">
   <h3>Mobility routine · 10 min, 1–3× a day</h3>
@@ -408,7 +401,7 @@ elbow:`
   <p class="cite" style="margin-top:10px">Do only the exercises your physio approves.</p>
 </div>
 <div class="grid2">
-  <div class="panel"><h3>Pain rule</h3><p>Discomfort up to 3/10 that settles within 24 hours is usually acceptable. Sharp pain, or pain that is worse the next day, means reduce or stop that exercise.</p></div>
+  <div class="panel"><h3>Response rule</h3><p>Do not use a generic pain threshold as clearance. Follow your physiotherapist’s specific advice. If pain, swelling, stiffness, or loss of motion increases after training, stop or modify the provoking exercise and contact your physiotherapist if it persists or is concerning.</p></div>
   <div class="panel"><h3>Contact your physio or doctor if</h3><ul class="plain">
     <li>Swelling, heat or redness is increasing</li><li>Tingling or numbness in the ring and little fingers</li>
     <li>You lose range of motion after training</li><li>A painful click or catch</li></ul></div>
