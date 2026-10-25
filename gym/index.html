@@ -195,59 +195,70 @@ const YT={
  pullup:"TMnxKjdYcME", row:"FEFjR70BPt8", pulldown:"ywhh5jbw1PI", face_pull:"SdyH7cnJnkg", oh_ext:"l4i7iDLiMXs", pushdown:"K--j4Qh9d2s", chest_press:"4YpxZXFADmc",
  squat:"_vNjV8teHW0", rdl:"lKLYvNGz6mk", leg_press:"cDGOn-yfKJA", seated_curl:"92MK-Qx3TiM", shoulder_press:"e5gJP7quyGk", shrug:"xiLT85G_GuU",
  split_squat:"8W3WcfGORwg", calf:"HvvqTpTongY", crunch:"2R93PU2IM-Y", flutter:"rqyyVGT3vHI", rev_crunch:"nYcE7-Dhpzk", wrist_curl:"VGkF2NTtao0",
- walk_tm:"9ccVxEvWtpA", bike:"JjuH3j6ydsA", stairs:"01H1FkKiQMI", hip_flexor:"F55tzqJggAY", ham_stretch:"Il1L75v6gq0"
+ walk_tm:"9ccVxEvWtpA", incline_bench:"11gY7Q5D5wo", db_bench:"5Y3VZsLb1Ys", pec_deck:"Dbly77Jgbo8", hammer:"zC3nLlEvin4", straight_arm:"duHQk2PxNos", dip_machine:"Zg0tT27iYuY", rev_pushdown:"nFoOW6zy6Bw", leg_ext:"MXvSzXEBOTI", calf_machine:"ndQc4mz4mBU", rear_fly:"hmtnyIGgR9A", bw_squat:"ZLJBfYF_oO0", sl_bridge:"sVfp4LN9niA", bike:"JjuH3j6ydsA", stairs:"01H1FkKiQMI", hip_flexor:"F55tzqJggAY", ham_stretch:"Il1L75v6gq0"
 };
 
 /* ---------- Sessions ---------- */
 const WARM="<strong>Warm-up, 10 min:</strong> 5 min easy bike, then ramp-up sets for exercise 01: 10 reps at ~40%, 5 reps at ~60%, 3 reps at ~80% of your first working set.";
 const fin=(ex,name,dose,detail,cue)=>({ex,name,sets:[dose],meta:detail,tag:"g",fin:true,cue});
 const DAYS=[
- {key:"mon",short:"Mon",day:"Monday",kind:"gym",label:"Gym",title:"Gym A",sub:"Chest · biceps",time:"~75 min",notes:[WARM],items:[
-  {ex:"bench",name:"Barbell bench press",sets:[6,8,10],rest:"2–3 min",tag:"r",swap:"Machine chest press, same sets, stop before lockout.",cue:"Shoulder blades back and down, feet planted. Bar to mid-chest, press up and slightly back."},
-  {ex:"incline_db",name:"Incline dumbbell press",sets:[8,10,12],rest:"2 min",tag:"y",cue:"Bench at 30°. Lower until a deep but comfortable stretch, press up in a slight arc."},
-  {ex:"crossover",name:"Cable crossover or pec deck",sets:[10,12,15],rest:"90 s",tag:"y",cue:"Fixed soft elbow. Let the arms open wide for a full stretch, squeeze 1 s together."},
-  {ex:"cable_row",name:"Seated cable row, neutral grip",sets:[10,12],rest:"2 min",tag:"y",why:"Second back session of the week (2 sets).",cue:"Chest tall, pull to the navel, pause 1 s with shoulder blades squeezed."},
-  {ex:"db_curl",name:"Dumbbell curl",sets:[8,10,12],rest:"90 s",tag:"y",swap:"Light weight, pain-free range only.",cue:"Elbows pinned to your sides, no swinging, palms turn up as you curl."},
-  {ex:"preacher",name:"Barbell preacher curl",sets:[10,12],rest:"90 s",tag:"r",swap:"Skip until cleared. The bottom position stretches the elbow under load.",cue:"Armpits on the pad. Lower slowly, stop just short of a locked elbow."},
-  {ex:"lat_raise",name:"Lateral raise",sets:[12,15,15],rest:"60 s",tag:"y",why:"Side delts trained twice a week (also Saturday).",cue:"Light dumbbells, lead with the elbows up to shoulder height, 2 s down."},
-  fin("bike","Easy bike","10–15 min","Zone 2","Finisher. Cycling interferes less with muscle growth than running.")
+ {key:"mon",short:"Mon",day:"Monday",kind:"gym",label:"Gym",title:"Gym A",sub:"Chest · biceps · side delts",notes:[WARM],items:[
+  {ex:"bench",name:"Barbell bench press",sets:[6,8,10,12],rest:"2–3 min",tag:"r",swap:"Machine chest press, same sets, stop before lockout.",cue:"Shoulder blades back and down, feet planted. Bar to mid-chest, press up and slightly back."},
+  {ex:"incline_bench",name:"Incline barbell press",sets:[6,8,10,12],rest:"2–3 min",tag:"r",swap:"Incline machine press, light.",cue:"Bench at 30°. Bar touches the upper chest, elbows about 45° from the body."},
+  {ex:"db_bench",name:"Flat dumbbell press",sets:[8,10,12],rest:"90 s",tag:"y",cue:"Lower until a comfortable stretch, press up in a slight arc."},
+  {ex:"incline_db",name:"Incline dumbbell press",sets:[8,10,12],rest:"90 s",tag:"y",cue:"Bench at 30°, controlled lowering, no clanking at the top."},
+  {ex:"pec_deck",name:"Pec deck",sets:[10,12,15],rest:"75 s",tag:"y",cue:"Fixed soft elbow, full stretch, squeeze 1 s with the handles together."},
+  {ex:"crossover",name:"Cable crossover",sets:[10,12,15],rest:"75 s",tag:"y",cue:"Step forward, slight lean, bring the handles together in front of the lower chest."},
+  {ex:"preacher",name:"Barbell preacher curl",sets:[6,8,10,12],rest:"75 s",tag:"r",swap:"Skip until cleared: the bottom position stretches the elbow under load. Do one extra set of hammer curls instead.",cue:"Armpits on the pad. Lower slowly, stop just short of a locked elbow."},
+  {ex:"db_curl",name:"Dumbbell curl",sets:[8,10,12],rest:"60 s",tag:"y",swap:"Light weight, pain-free range only.",cue:"Elbows pinned to your sides, no swinging, palms turn up as you curl."},
+  {ex:"hammer",name:"Hammer curl",sets:[10,12,12],rest:"60 s",tag:"y",why:"Neutral grip: usually the most elbow-friendly curl.",cue:"Thumbs up, elbows still, curl to shoulder height, lower over 2 s."},
+  {ex:"lat_raise",name:"Lateral raise",sets:[12,15,15],rest:"60 s",tag:"y",cue:"Light dumbbells, lead with the elbows up to shoulder height, 2 s down."},
+  fin("bike","Easy bike","5 min","Zone 2","Cool-down. Cycling interferes less with muscle growth than running.")
  ]},
- {key:"tue",short:"Tue",day:"Tuesday",kind:"rest",label:"Rest",title:"Rest",sub:"Dutch class",time:"",notes:["Rest from training. Reach 8,000–10,000 steps and do your physio exercises (see <strong>Elbow</strong>). Take creatine as usual."],items:[]},
- {key:"wed",short:"Wed",day:"Wednesday",kind:"home",label:"Home",title:"Home A",sub:"Legs · calves · abs · intervals",time:"~40 min",notes:["Second leg session of the week, at home. Load: a backpack with books or water bottles."],items:[
-  {ex:"split_squat",name:"Bulgarian split squat",sets:[10,12,15],rest:"90 s",unit:"/ leg",tag:"g",cue:"Rear foot on a chair or sofa. Drop the back knee straight down, front heel planted. Add the backpack when 15 reps is easy."},
-  {ex:"calf",name:"Single-leg calf raise on a step",sets:[12,12,15,15],rest:"45 s",unit:"/ leg",tag:"g",cue:"2 s pause with the heel low in the stretch, then rise as high as possible."},
-  {ex:"crunch",name:"Crunch",sets:[15,15,20],rest:"45 s",tag:"g",cue:"Hands across the chest, curl ribs toward hips, exhale at the top. Don't pull on the neck."},
-  {ex:"flutter",name:"Flutter kicks",sets:[15,20,20],rest:"45 s",unit:"/ leg",tag:"g",cue:"Lower back pressed down, small fast kicks."},
-  fin("stairs","Intervals: stairs or uphill","8 × 30 s","60 s easy between","Hard but controlled. Max two hard interval sessions a week.")
+ {key:"tue",short:"Tue",day:"Tuesday",kind:"rest",label:"Rest",title:"Rest",sub:"Dutch class",notes:["Rest from training. Reach 8,000–10,000 steps and do your physio exercises (see <strong>Elbow</strong>). Take creatine as usual."],items:[]},
+ {key:"wed",short:"Wed",day:"Wednesday",kind:"home",label:"Home",title:"Home A",sub:"Legs · calves · abs · intervals",notes:["Bodyweight only, no equipment needed. Do the exercises in order, then the intervals."],items:[
+  {ex:"split_squat",name:"Bulgarian split squat",sets:[12,15,15],rest:"60 s",unit:"/ leg",tag:"g",cue:"Rear foot on a chair or sofa. Drop the back knee straight down. Slow 3 s lowering makes bodyweight hard enough."},
+  {ex:"bw_squat",name:"Bodyweight squat",sets:[20,20,25],rest:"60 s",tag:"g",cue:"3 s down, 1 s pause at the bottom, stand up fast."},
+  {ex:"sl_bridge",name:"Single-leg glute bridge",sets:[12,15,15],rest:"45 s",unit:"/ leg",tag:"g",cue:"One foot planted, other leg straight. Hips rise level, 2 s squeeze at the top."},
+  {ex:"calf",name:"Single-leg calf raise on a step",sets:[12,15,15,15],rest:"45 s",unit:"/ leg",tag:"g",cue:"2 s pause with the heel low in the stretch, then rise as high as possible."},
+  {ex:"crunch",name:"Crunch",sets:[15,15,20],rest:"45 s",tag:"g",cue:"Hands across the chest, curl ribs toward hips, exhale at the top."},
+    fin("stairs","Intervals: stairs or uphill","6 × 30 s","60 s easy between","Hard but controlled. Max two hard interval sessions a week.")
  ]},
- {key:"thu",short:"Thu",day:"Thursday",kind:"gym",label:"Gym",title:"Gym B",sub:"Back · triceps",time:"~75 min",notes:[WARM],items:[
-  {ex:"pullup",name:"Pull-up (assisted if needed)",sets:[6,8,10],rest:"2–3 min",tag:"r",swap:"Lat pulldown, neutral grip. Hanging loads the elbow at full stretch.",cue:"Pull the chest toward the bar, elbows down and back. Use the assisted machine to hit the reps."},
-  {ex:"row",name:"Bent-over barbell row",sets:[8,10,12],rest:"2 min",tag:"y",swap:"If gripping the bar hurts: chest-supported machine row.",cue:"Hinge to 45°, flat back. Pull to the belly button, lower with control."},
-  {ex:"pulldown",name:"Lat pulldown, neutral grip",sets:[10,12,12],rest:"90 s",tag:"y",cue:"Slight lean back, full stretch at the top, pull to the upper chest."},
+ {key:"thu",short:"Thu",day:"Thursday",kind:"gym",label:"Gym",title:"Gym B",sub:"Back · triceps · rear delts",notes:[WARM],items:[
+  {ex:"pullup",name:"Pull-up (assisted if needed)",sets:[6,8,10,12],rest:"2–3 min",tag:"r",swap:"Lat pulldown, neutral grip. Hanging loads the elbow at full stretch.",cue:"Pull the chest toward the bar, elbows down and back. Use the assisted machine to hit the reps."},
+  {ex:"row",name:"Bent-over barbell row",sets:[6,8,10,12],rest:"2–3 min",tag:"y",swap:"If gripping the bar hurts: chest-supported machine row.",cue:"Hinge to 45°, flat back. Pull to the belly button, lower with control."},
+  {ex:"pulldown",name:"Lat pulldown, neutral grip",sets:[8,10,12],rest:"90 s",tag:"y",cue:"Slight lean back, full stretch at the top, pull to the upper chest."},
+  {ex:"cable_row",name:"Seated cable row",sets:[8,10,12],rest:"90 s",tag:"y",cue:"Chest tall, pull to the navel, pause 1 s with shoulder blades squeezed."},
+  {ex:"straight_arm",name:"Straight-arm cable pulldown",sets:[10,12,15],rest:"60 s",tag:"y",cue:"Arms almost straight, sweep the bar from eye level to the thighs using the lats."},
   {ex:"face_pull",name:"Face pull",sets:[12,15,15],rest:"60 s",tag:"y",cue:"Rope at face height, pull toward the forehead, elbows high."},
-  {ex:"oh_ext",name:"Overhead cable triceps extension",sets:[8,10,12],rest:"90 s",tag:"r",why:"Overhead triceps work grew ~40% more muscle than arms-down in a 12-week study.",swap:"Needs a deep elbow bend under load. Do pushdowns instead until cleared.",cue:"Face away from the cable, elbows by your ears, lower behind the head, extend."},
-  {ex:"pushdown",name:"Cable triceps pushdown",sets:[10,12,15],rest:"60 s",tag:"y",swap:"Light weight, stop before the elbow locks.",cue:"Elbows pinned at your sides, push down, squeeze 1 s."},
-  {ex:"chest_press",name:"Machine chest press",sets:[10,12],rest:"90 s",tag:"y",why:"Second chest session of the week (2 sets).",cue:"Handles at mid-chest, press to almost straight arms."},
-  fin("bike","Bike intervals","5 × 30 s","90 s easy between","Finisher, about 10 minutes.")
+  {ex:"pushdown",name:"Cable triceps pushdown",sets:[6,8,10,12],rest:"75 s",tag:"y",swap:"Light weight, stop before the elbow locks.",cue:"Elbows pinned at your sides, push down, squeeze 1 s."},
+  {ex:"oh_ext",name:"Overhead cable triceps extension",sets:[8,10,12],rest:"75 s",tag:"r",why:"Overhead work grew ~40% more triceps than arms-down in a 12-week study.",swap:"Needs a deep elbow bend under load. Do pushdowns instead until cleared.",cue:"Face away from the cable, elbows by your ears, lower behind the head, extend."},
+  {ex:"dip_machine",name:"Seated dip machine",sets:[10,12,12],rest:"75 s",tag:"r",swap:"Skip until cleared, or one more set of pushdowns.",cue:"Sit tall, press the handles down until arms are nearly straight."},
+  {ex:"rev_pushdown",name:"Reverse-grip pushdown",sets:[6,8,10],rest:"60 s",tag:"y",cue:"Palms up on a straight bar, elbows fixed. Lighter than the normal pushdown."},
+  fin("bike","Easy bike","5 min","Zone 2","Cool-down.")
  ]},
- {key:"fri",short:"Fri",day:"Friday",kind:"home",label:"Home",title:"Home B",sub:"Abs · calves · forearms · cardio",time:"~40 min",notes:["Easy day: Saturday is leg day. Forearm work doubles as elbow rehab, only with your physio's OK."],items:[
+ {key:"fri",short:"Fri",day:"Friday",kind:"home",label:"Home",title:"Home B",sub:"Abs · calves · grip · cardio",notes:["Bodyweight only. Easy day: Saturday is leg day."],items:[
   {ex:"rev_crunch",name:"Reverse crunch",sets:[12,15,15],rest:"45 s",tag:"g",cue:"Curl the hips toward the chest, lower over 3 seconds."},
   {ex:"crunch",name:"Crunch",sets:[15,15,20],rest:"45 s",tag:"g",cue:"Slow, exhale at the top."},
-  {ex:"calf",name:"Calf raise on a step (both legs)",sets:[15,15,20],rest:"45 s",tag:"g",cue:"Full stretch, full rise. Hold the backpack once 20 reps is easy."},
-  {ex:"wrist_curl",name:"Wrist curl, both directions",sets:[10,12,15],rest:"45 s",tag:"y",cue:"Forearm on your thigh, palm up then palm down, light dumbbell or bottle."},
-  fin("walk_tm","Steady cardio: bike or brisk walk","25 min","Zone 2 · talk pace","Easy enough to hold a conversation.")
+  {ex:"flutter",name:"Flutter kicks",sets:[15,20,20],rest:"45 s",unit:"/ leg",tag:"g",cue:"Lower back stays pressed down."},
+  {ex:"calf",name:"Calf raise on a step (both legs)",sets:[20,20,25],rest:"45 s",tag:"g",cue:"Full stretch, full rise, 1 s pause at the top."},
+  {ex:null,name:"Towel wring and grip squeeze",sets:[15,15,15],rest:"30 s",tag:"y",cue:"Forearm work without weights: wring a rolled towel both directions, then squeeze a soft ball. Doubles as elbow rehab with your physio's OK."},
+  fin("walk_tm","Steady cardio: brisk walk or bike","20 min","Zone 2 · talk pace","Easy enough to hold a conversation.")
  ]},
- {key:"sat",short:"Sat",day:"Saturday",kind:"gym",label:"Gym",title:"Gym C",sub:"Legs · shoulders · traps",time:"~85 min",notes:[WARM],items:[
-  {ex:"squat",name:"Barbell squat",sets:[6,8,10],rest:"3 min",tag:"y",swap:"If holding the bar on your back hurts the elbow: hack squat or Smith machine squat.",cue:"Brace, sit down between the heels to at least parallel, drive up."},
-  {ex:"rdl",name:"Romanian deadlift",sets:[8,10,12],rest:"2–3 min",tag:"y",swap:"If the grip pulls on the elbow: use lifting straps, or 45° back extensions.",cue:"Soft knees, push the hips back, bar close to the legs, lower until a strong hamstring stretch."},
-  {ex:"leg_press",name:"Leg press",sets:[10,12,15],rest:"2 min",tag:"g",cue:"Lower until knees reach about 90° without the lower back lifting."},
-  {ex:"seated_curl",name:"Seated leg curl",sets:[8,10,12],rest:"90 s",tag:"g",why:"Seated curls grew more hamstring than lying curls (about 14% vs 9%).",cue:"Knee lined up with the pivot, curl fully, lower over 3 seconds."},
+ {key:"sat",short:"Sat",day:"Saturday",kind:"gym",label:"Gym",title:"Gym C",sub:"Legs · shoulders · traps",notes:[WARM.replace("5 min easy bike","5 min easy bike, leg swings")],items:[
+  {ex:"squat",name:"Barbell squat",sets:[6,8,10,10],rest:"2–3 min",tag:"y",swap:"If holding the bar on your back hurts the elbow: hack squat or Smith machine squat.",cue:"Brace, sit down between the heels to at least parallel, drive up."},
+  {ex:"leg_press",name:"Leg press",sets:[8,10,12,15],rest:"2 min",tag:"g",cue:"Lower until knees reach about 90° without the lower back lifting."},
+  {ex:"rdl",name:"Romanian deadlift",sets:[8,10,12],rest:"2 min",tag:"y",swap:"If the grip pulls on the elbow: lifting straps, or 45° back extensions.",cue:"Soft knees, hips back, bar close to the legs, lower until a strong hamstring stretch."},
+  {ex:"seated_curl",name:"Seated leg curl",sets:[6,8,10,12],rest:"90 s",tag:"g",why:"Seated curls grew more hamstring than lying curls (about 14% vs 9%).",cue:"Knee lined up with the pivot, curl fully, lower over 3 seconds."},
+  {ex:"leg_ext",name:"Leg extension",sets:[10,12,15],rest:"75 s",tag:"g",cue:"Squeeze 1 s at full extension, lower over 3 s."},
+  {ex:"calf_machine",name:"Standing calf raise machine",sets:[6,8,10,12],rest:"60 s",tag:"g",why:"Heavy calf work here, since home calves are bodyweight only.",cue:"2 s pause in the stretch, full rise on the toes."},
   {ex:"shoulder_press",name:"Machine shoulder press",sets:[6,8,10],rest:"2 min",tag:"y",swap:"Light, stop before lockout.",cue:"Handles at shoulder height, press up without arching your back."},
-  {ex:"lat_raise",name:"Lateral raise",sets:[10,12,15],rest:"60 s",tag:"y",cue:"Lead with the elbows, 2 s down."},
+  {ex:"lat_raise",name:"Lateral raise",sets:[8,10,12],rest:"60 s",tag:"y",cue:"Lead with the elbows, 2 s down."},
+  {ex:"rear_fly",name:"Reverse pec deck (rear delts)",sets:[12,15,15],rest:"60 s",tag:"y",cue:"Chest on the pad, sweep the arms back to the shoulder line, soft elbows."},
   {ex:"shrug",name:"Dumbbell shrug",sets:[10,12,12],rest:"60 s",tag:"y",swap:"If holding dumbbells pulls on the elbow: shrug machine or Smith machine.",cue:"Shoulders straight up, 1 s squeeze, no rolling."}
  ]},
- {key:"sun",short:"Sun",day:"Sunday",kind:"home",label:"Home",title:"Home C",sub:"Long walk · abs · mobility",time:"~45 min",notes:["<strong>Weekly check-in:</strong> average morning weight, waist at the navel, lifts that went up, elbow pain (0–10) and range."],items:[
-  fin(null,"Long walk or bike ride","35–40 min","Easy, outdoors","Conversational pace."),
+ {key:"sun",short:"Sun",day:"Sunday",kind:"home",label:"Home",title:"Home C",sub:"Long walk · abs · mobility",notes:["<strong>Weekly check-in:</strong> average morning weight, waist at the navel, lifts that went up, elbow pain (0–10) and range."],items:[
+  fin(null,"Long walk or bike ride","30–35 min","Easy, outdoors","Conversational pace."),
   {ex:"flutter",name:"Flutter kicks",sets:[15,20,20],rest:"45 s",unit:"/ leg",tag:"g",cue:"Lower back pressed down."},
   {ex:"hip_flexor",name:"Hip flexor stretch",sets:["2 × 30 s"],meta:"each side",tag:"g",cue:"Half-kneeling, tuck the pelvis, shift forward gently."},
   {ex:"ham_stretch",name:"Hamstring stretch",sets:["2 × 30 s"],meta:"each side",tag:"g",cue:"Lying down, towel around the foot so the arms stay relaxed."}
@@ -262,10 +273,10 @@ const DAYS=[
 
 /* ---------- Info pages ---------- */
 const VOL=[
- ["Chest","Mon 9 · Thu 2",11,"10–20"],["Back (lats, mid-back)","Mon 2 · Thu 9",11,"10–20"],["Quads","Sat 6 · Wed 3",9,"10–20"],
- ["Hamstrings","Sat 6",6,"10–20"],["Glutes","Sat 6 · Wed 3 (+ indirect)",11,"10–20"],["Side delts","Mon 3 · Sat 3 (+ presses)",8,"8–16"],
- ["Rear delts","Thu 3 (+ rows)",9,"8–16"],["Biceps","Mon 5 (+ rows, pull-ups)",10,"8–16"],["Triceps","Thu 6 (+ presses)",11,"8–16"],
- ["Calves","Wed 4 · Fri 3",7,"8–16"],["Abs","Wed 6 · Fri 6 · Sun 3",15,"8–16"]
+ ["Chest","Mon 20",20,"10–20"],["Back (lats, mid-back)","Thu 17 (+ face pulls)",18,"10–20"],["Quads","Sat 11 · Wed 6",17,"10–20"],
+ ["Hamstrings","Sat 7 (+ bridges)",8,"10–20"],["Glutes","Sat 11 · Wed 9 (+ indirect)",20,"10–20"],["Side delts","Mon 3 · Sat 3 (+ presses)",8,"8–16"],
+ ["Rear delts","Thu 3 · Sat 3 (+ rows)",13,"8–16"],["Biceps","Mon 10 (+ pulls)",17,"8–16"],["Triceps","Thu 13 (+ presses)",21,"8–16"],
+ ["Calves","Sat 4 · Wed 4 · Fri 3",11,"8–16"],["Abs","Wed 3 · Fri 9 · Sun 3",15,"8–16"]
 ];
 const volRows=VOL.map(([m,where,n,rng])=>{const [lo,hi]=rng.split("–").map(Number);return `<tr><td><b>${m}</b><div class="bar" aria-hidden="true"><span class="zone" style="left:${lo/24*100}%;right:${100-hi/24*100}%"></span><i style="width:${Math.min(n,24)/24*100}%"></i></div></td><td>${where}</td><td class="n">${n}</td><td class="n">${rng}</td></tr>`}).join("");
 const blockRows=BLOCK.map((b,i)=>`<li class="${PH&&phaseOf(WEEK)===i?"cur":""}"><div class="wk">Week ${b.w}</div><div><b>${b.name}</b> <span class="pill lo">RIR ${b.rir}</span><p>${b.text}</p></div></li>`).join("");
@@ -273,7 +284,7 @@ const PAGES={
 program:`
 <div class="panel">
   <h3>How the week is built</h3>
-  <p>Your three-day split stays: chest and biceps, back and triceps, legs and shoulders. Each gym session now caps one muscle at about 9–11 hard sets, because research on sets per session finds growth levels off around there. Extra volume moves to a second, shorter exposure later in the week (2 back sets on Monday, 2 chest sets on Thursday, legs again at home on Wednesday).</p>
+  <p>Your three-day bro split, at full size: each gym day trains its muscles with 30+ hard sets in about 85–95 minutes, and each home day is bodyweight-only and under 45 minutes. Research finds growth from extra sets in one session tapers off above roughly 11 sets per muscle, so the last sets of a big day add less than the first ones. They still add something, and big sessions are how you like to train.</p>
   <p>All gym sessions use your ascending-rep sets (6 · 8 · 10). Studies find this pyramid style builds the same muscle as straight sets, so it's a matter of preference.</p>
 </div>
 <div class="panel">
@@ -282,9 +293,9 @@ program:`
 </div>
 <div class="panel">
   <h3>Weekly hard sets per muscle</h3>
-  <p>Direct sets per week, counting indirect work as half a set. The dashed box shows the target range; most muscles grow best between 10 and 20 sets.</p>
+  <p>Hard sets per week, counting indirect work as half a set. The dashed box shows the evidence-based range; above it, gains keep coming but more slowly.</p>
   <div class="tbl"><table><thead><tr><th>Muscle</th><th>Where</th><th>Sets</th><th>Target</th></tr></thead><tbody>${volRows}</tbody></table></div>
-  <p class="cite" style="margin-top:10px">Hamstrings and calves sit below target in block 1 on purpose: legs are your largest muscles and the block also includes a calorie deficit. Block 2 adds a set to each.</p>
+  <p class="cite" style="margin-top:10px">Hamstrings are the one muscle below target: Romanian deadlifts and seated curls carry them, and block 2 adds a hamstring exercise. Chest, biceps and triceps sit at or above the top of the range; if recovery suffers (lifts dropping, joints aching), drop the last exercise for that muscle first.</p>
 </div>
 <div class="grid2">
   <div class="panel"><h3>Progression rules</h3><ol class="plain">
@@ -454,13 +465,15 @@ function videoBlock(it){
   const id=it.ex&&YT[it.ex]; if(!id) return "";
   return `<div class="video" data-id="${id}"><button type="button" aria-label="Play demo video: ${it.name}"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/${id}/hqdefault.jpg"><span class="play" aria-hidden="true"></span><span class="lbl">Demo</span></button></div>`;
 }
+function restMin(r){if(!r)return 1;const m=r.match(/([\d.]+)(?:–([\d.]+))?\s*(min|s)/);if(!m)return 1;const v=m[2]?(+m[1]+ +m[2])/2:+m[1];return m[3]==="s"?v/60:v}
+function estimate(d){let t=d.kind==="gym"?10:3;for(const it of d.items){if(it.fin){const m=String(it.sets[0]).match(/(\d+)(?:–(\d+))?\s*min/);if(m)t+=m[2]?(+m[1]+ +m[2])/2:+m[1];else{const k=String(it.sets[0]).match(/(\d+)\s*×\s*(\d+)\s*s/);t+=k?(+k[1]*(+k[2]+60))/60:10}continue}const per=(it.unit?1.5:0.75)+restMin(it.rest);t+=it.sets.length*(typeof it.sets[0]==="number"?per:1);}return Math.round(t/5)*5}
 function show(key,user){
   const d=DAYS.find(x=>x.key===key)||DAYS[0];
   document.querySelectorAll(".day").forEach(b=>b.setAttribute("aria-selected",String(b.id==="tab-"+d.key)));
   let notes=[...d.notes];
   if(d.kind==="gym"&&PH) notes.unshift(`<strong>Week ${WEEK} · ${PH.name}:</strong> ${PH.text}`);
   if(d.kind==="gym"&&d.items.some(i=>i.tag==="r")) notes.push(`<strong>Elbow:</strong> red exercises load the elbow at lockout or full stretch. Use the swap on each card until your physio clears them.`);
-  let h=`<div class="session-head"><h2>${d.day}${d.title?`<em> · ${d.title}</em>`:""}</h2><div class="session-meta">${[d.sub,d.time].filter(Boolean).join(" · ")}</div></div>`;
+  let h=`<div class="session-head"><h2>${d.day}${d.title?`<em> · ${d.title}</em>`:""}</h2><div class="session-meta">${[d.sub,d.items.length?`~${estimate(d)} min · ${d.items.filter(i=>!i.fin).reduce((n,i)=>n+(typeof i.sets[0]==="number"?i.sets.length:0),0)} sets`:""].filter(Boolean).join(" · ")}</div></div>`;
   if(notes.length) h+=`<ul class="notes">${notes.map(n=>`<li class="${n.startsWith("<strong>Week")?"phase":n.startsWith("<strong>Elbow")?"warn":""}">${n}</li>`).join("")}</ul>`;
   if(PAGES[d.key]) h+=PAGES[d.key];
   if(d.items.length){
