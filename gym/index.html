@@ -4,22 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>My Gym Plan</title>
-<meta name="description" content="Three-day gym split, home days, supplements and nutrition, with exercise demo videos.">
+<meta name="description" content="Evidence-based 12-week program: 3-day gym split, home days, nutrition, supplements, demo videos and sources.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#ECEFF1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0E1114" media="(prefers-color-scheme: dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=Vazirmatn:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
 <style>
-/* Layout: a coach's program sheet — header facts, sticky week strip (days + Supplements / Nutrition / Elbow), one view at a time; each exercise = demo video + set-by-set reps. */
+/* Layout: a coach's program sheet — header facts + this week's phase, sticky strip (7 days | Program · Food · Supps · Elbow · Sources), one view at a time. */
 :root{
   --bg:#ECEFF1; --surface:#FFFFFF; --ink:#14181C; --muted:#56616B; --line:#D3D9DE;
   --accent:#2347D6; --accent-soft:#E3E9FF; --chip:#E2E7EB; --video:#0E1114;
   --g:#1D8048; --y:#A86E12; --r:#BF3428; --r-soft:#FBEAE8; --y-soft:#FBF1E0;
   --display:"Barlow Condensed","Arial Narrow","Roboto Condensed",sans-serif;
   --body:"Barlow","Segoe UI",system-ui,-apple-system,sans-serif;
-  --fa:"Vazirmatn","Segoe UI",Tahoma,sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root{
@@ -32,8 +31,9 @@ html{-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--body);margin:0;padding-top:env(safe-area-inset-top,0px)}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:var(--accent)}
 
-header.top{padding-block:22px 4px;display:grid;gap:14px}
+header.top{padding-block:22px 4px;display:grid;gap:12px}
 .eyebrow{font:600 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 h1{font:700 42px/1 var(--display);letter-spacing:.01em;margin:6px 0 0;text-transform:uppercase}
 .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:0}
@@ -41,6 +41,8 @@ h1{font:700 42px/1 var(--display);letter-spacing:.01em;margin:6px 0 0;text-trans
 .facts div{background:var(--surface);padding:10px 12px;min-width:0}
 .facts dt{font:600 11px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .facts dd{margin:5px 0 0;font:700 19px/1.15 var(--display)}
+.now{display:flex;flex-direction:column;gap:4px;background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:10px 12px;font-size:15px}
+.now b{font:700 18px/1 var(--display);text-transform:uppercase;color:var(--accent);white-space:nowrap}
 
 nav.week{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);margin-top:14px}
 .days{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:1px}
@@ -62,12 +64,11 @@ main{padding-block:18px 36px}
 .session-head h2{font:700 34px/1 var(--display);margin:0;text-transform:uppercase}
 .session-head h2 em{font-style:normal;color:var(--accent)}
 .session-meta{font:600 13px/1.2 var(--body);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
-.fa{font-family:var(--fa);direction:rtl;unicode-bidi:isolate}
-.session-fa{font:600 15px/1.4 var(--fa);color:var(--muted);margin-top:6px}
 .notes{display:grid;gap:8px;margin:14px 0 18px;padding:0;list-style:none}
 .notes li{background:var(--chip);border-radius:8px;padding:10px 12px;font-size:15px;max-width:80ch}
 .notes li strong{font-weight:600}
 .notes li.warn{background:var(--r-soft)}
+.notes li.phase{background:var(--accent-soft)}
 
 .list{display:grid;grid-template-columns:1fr;gap:14px;margin:0;padding:0;list-style:none;counter-reset:ex}
 @media (min-width:760px){.list{grid-template-columns:1fr 1fr}}
@@ -84,13 +85,13 @@ main{padding-block:18px 36px}
 .ex-title{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
 .ex-title::before{counter-increment:ex;content:counter(ex,decimal-leading-zero);font:700 15px/1 var(--display);color:var(--muted);font-variant-numeric:tabular-nums}
 .ex h3{margin:0;font:600 18px/1.2 var(--body)}
-.ex .fa{font-size:14px;color:var(--muted);margin-left:auto}
+.ex .why{font-size:13px;color:var(--accent);margin:-4px 0 0}
 .sets{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch}
 .set{border:1px solid var(--line);border-radius:8px;padding:5px 9px 6px;min-width:52px;text-align:center}
 .set small{display:block;font:600 10px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .set b{display:block;font:700 22px/1.05 var(--display);font-variant-numeric:tabular-nums;margin-top:3px}
-.set.rest{border-style:dashed}
-.set.rest b{font-size:17px;margin-top:5px}
+.set.meta{border-style:dashed}
+.set.meta b{font-size:17px;margin-top:5px}
 .cue{margin:0;font-size:14.5px;color:var(--muted);line-height:1.45}
 .swap{margin:0;font-size:14px;line-height:1.4;padding:8px 10px;border-radius:8px;background:var(--y-soft)}
 .swap.r{background:var(--r-soft)}
@@ -112,38 +113,50 @@ tr:last-child td{border-bottom:0}
 th{font:600 12px/1.2 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 td b{font-weight:600}
+tr.cur td{background:var(--accent-soft)}
+.bar{height:8px;border-radius:4px;background:var(--chip);position:relative;min-width:90px;margin-top:6px}
+.bar i{position:absolute;inset:0 auto 0 0;border-radius:4px;background:var(--accent)}
+.bar .zone{position:absolute;top:-3px;bottom:-3px;border-left:1px dashed var(--muted);border-right:1px dashed var(--muted)}
 .pill{display:inline-block;font:600 11px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;padding:4px 6px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
 .pill.hi{color:var(--g)} .pill.md{color:var(--y)} .pill.lo{color:var(--muted)}
-ul.plain{margin:0;padding-left:18px;display:grid;gap:4px}
-.grid2{display:grid;gap:12px}
+ul.plain,ol.plain{margin:0;padding-left:18px;display:grid;gap:6px}
+.grid2{display:grid;gap:12px;margin-top:12px}
 @media (min-width:760px){.grid2{grid-template-columns:1fr 1fr}.grid2 .panel{margin-top:0}}
-.grid2{margin-top:12px}
 .supp h3{margin:0}
-.supp-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.supp-fa{color:var(--muted);font-size:14px;margin:2px 0 10px}
+.supp-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
 .kv{display:grid;grid-template-columns:72px 1fr;gap:6px 10px;margin:0 0 10px}
 .kv div{display:contents}
 .kv dt{font:600 11px/1.6 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .kv dd{margin:0;font-weight:500}
-.grid2.supps{margin-top:0}
+ol.block{list-style:none;margin:0;padding:0;display:grid;gap:0}
+ol.block li{display:grid;grid-template-columns:86px 1fr;gap:10px;padding:10px 8px;border-bottom:1px solid var(--line)}
+ol.block li:last-child{border-bottom:0}
+ol.block li.cur{background:var(--accent-soft);border-radius:8px}
+ol.block .wk{font:700 17px/1.3 var(--display);text-transform:uppercase;font-variant-numeric:tabular-nums}
+ol.block b{font:700 17px/1.3 var(--display);text-transform:uppercase}
+ol.block p{margin:4px 0 0;font-size:15px;color:var(--muted)}
+.cite{font-size:13px;color:var(--muted)}
+ol.src{margin:0;padding-left:22px;display:grid;gap:10px;font-size:15px}
+ol.src span{color:var(--muted)}
 footer{color:var(--muted);font-size:13px;padding-block:8px 32px;border-top:1px solid var(--line)}
 footer p{margin:8px 0;max-width:80ch}
-@media (max-width:420px){h1{font-size:36px}.ex .fa{margin-left:0;width:100%}}
+@media (max-width:420px){h1{font-size:36px}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <div>
-      <div class="eyebrow">From 26 Oct 2026 · 3-day split</div>
+      <div class="eyebrow">Block 1 · 26 Oct 2026 – 17 Jan 2027</div>
       <h1>My Gym Plan</h1>
     </div>
     <dl class="facts">
       <div><dt>Goal</dt><dd>Muscle + less belly fat</dd></div>
       <div><dt>Gym</dt><dd>Mon · Thu · Sat</dd></div>
       <div><dt>Home</dt><dd>Wed · Fri · Sun</dd></div>
-      <div><dt>Daily</dt><dd>140 g protein · 8k+ steps</dd></div>
+      <div><dt>Daily</dt><dd>150 g protein · 8–10k steps</dd></div>
     </dl>
+    <div class="now" id="now"></div>
   </header>
 </div>
 <nav class="week" aria-label="Plan sections">
@@ -152,150 +165,163 @@ footer p{margin:8px 0;max-width:80ch}
 <div class="wrap">
   <main id="main"></main>
   <footer>
-    <p><strong>Reading the sets.</strong> 6 · 8 · 10 · 12 means four sets: the first is the heaviest for 6 reps, then lower the weight a little each set. When you get every rep on every set, add weight next session (+2.5 kg on legs and barbell lifts, +1–2 kg on dumbbells).</p>
-    <p><strong>Elbow tags.</strong> <span style="color:var(--g)">Green</span>: little elbow load. <span style="color:var(--y)">Yellow</span>: light weight and pain-free range only, after your physio approves. <span style="color:var(--r)">Red</span>: use the swap until your physio clears it. Physio advice overrides this plan.</p>
+    <p><strong>Sets.</strong> 6 · 8 · 10 means three sets: the first is the heaviest for 6 reps, then reduce the weight about 10% each set. <strong>RIR</strong> = reps left in the tank when you stop. When you hit every rep on every set at the week's RIR, add weight next session.</p>
+    <p><strong>Elbow tags.</strong> <span style="color:var(--g)">Green</span>: little elbow load. <span style="color:var(--y)">Yellow</span>: light, pain-free range, after physio approval. <span style="color:var(--r)">Red</span>: use the swap until your physio clears it. Physio advice overrides this plan.</p>
     <p>Demo videos are embedded from YouTube and belong to their creators. The kg log is saved only in this browser.</p>
   </footer>
 </div>
 
 <script>
-/* ---------- Data ---------- */
-const YT = {
-  bench:"rT7DgCr-3pg", incline_bench:"11gY7Q5D5wo", pec_deck:"Dbly77Jgbo8", db_bench:"5Y3VZsLb1Ys", incline_db:"hChjZQhX1Ls",
-  crossover:"taI4XduLpTk", preacher:"jilTTmyEoYY", db_curl:"ykJmrZ5v0Oo", wrist_curl:"VGkF2NTtao0",
-  crunch:"2R93PU2IM-Y", flutter:"rqyyVGT3vHI", rev_crunch:"nYcE7-Dhpzk",
-  row:"FEFjR70BPt8", pullup:"TMnxKjdYcME", rear_fly:"rQhdsa5QdVU", pushdown:"K--j4Qh9d2s", dip_machine:"Zg0tT27iYuY", rev_pushdown:"nFoOW6zy6Bw",
-  squat:"_vNjV8teHW0", leg_press:"cDGOn-yfKJA", leg_curl:"SbSNUXPRkc8", calf:"HvvqTpTongY",
-  shoulder_press:"e5gJP7quyGk", lat_raise:"OK1k6NdNo1I", shrug:"xiLT85G_GuU",
-  walk_tm:"9ccVxEvWtpA", stairs:"01H1FkKiQMI", bike:"JjuH3j6ydsA", ham_stretch:"Il1L75v6gq0", hip_flexor:"F55tzqJggAY"
-};
-const WARM = "<strong>Warm-up, 10 min:</strong> 5 min bike or incline walk, arm circles, then 2 light sets of the first exercise (12 reps at ~40%, 6 reps at ~70%).";
-const CARDIO_FIN = (ex,name,fa,dose,cue)=>({ex,name,fa,sets:[dose],rest:"",tag:"g",fin:true,cue});
+/* ---------- Block calendar ---------- */
+const START=new Date(2026,9,26);
+const WEEK=Math.floor((Date.now()-START)/(7*864e5))+1;
+const BLOCK=[
+ {w:"1",name:"Intro",rir:"3",text:"Find your working weights. Stop every set with 3 reps left. Learn the technique from the videos."},
+ {w:"2–5",name:"Build",rir:"1–2",text:"Full sets. Add weight whenever you hit every rep at RIR 1–2."},
+ {w:"6",name:"Deload",rir:"4",text:"Same weights, half the sets, easy effort. Let joints and the elbow recover."},
+ {w:"7–11",name:"Push",rir:"0–2",text:"Compounds RIR 1–2. Last set of each isolation exercise to RIR 0–1."},
+ {w:"12",name:"Deload + test",rir:"4",text:"Half the sets. Measure weight, waist and photos; we plan block 2 from these."}
+];
+const phaseOf=w=>w<=1?0:w<=5?1:w===6?2:w<=11?3:4;
+const PH = WEEK>=1&&WEEK<=12 ? BLOCK[phaseOf(WEEK)] : null;
+document.getElementById("now").innerHTML = WEEK<1
+  ? `<b>Starts Mon</b><span>Week 1 begins 26 October. First week: ${BLOCK[0].text}</span>`
+  : WEEK>12 ? `<b>Block done</b><span>Time to reassess and plan block 2.</span>`
+  : `<b>Week ${WEEK} · ${PH.name}</b><span>RIR ${PH.rir}. ${PH.text}</span>`;
 
-const DAYS = [
- {key:"mon", short:"Mon", day:"Monday", kind:"gym", label:"Gym", title:"Session 1", sub:"Chest · biceps", fa:"جلسه اول: سینه، جلو بازو", time:"75–90 min",
-  notes:[WARM, "Abs and forearms from your original session are on the home days."],
-  items:[
-   {ex:"bench", name:"Barbell bench press", fa:"پرس هالتر سینه", sets:[6,8,10,12], rest:"2 min", tag:"r", swap:"Machine chest press, light, stop before lockout.", cue:"Shoulder blades pinched, feet planted. Lower the bar to mid-chest, press up and slightly back."},
-   {ex:"incline_bench", name:"Incline barbell press", fa:"پرس هالتر بالا سینه", sets:[6,8,10,12], rest:"2 min", tag:"r", swap:"Incline machine press, light.", cue:"Bench at 30°. Bar touches the upper chest, elbows about 45° from the body."},
-   {ex:"pec_deck", name:"Pec deck", fa:"قفسه سینه دستگاه", sets:[6,8,10,12], rest:"90 s", tag:"y", cue:"Slight elbow bend that stays fixed. Squeeze 1 s with the handles together, open slowly."},
-   {ex:"db_bench", name:"Flat dumbbell press", fa:"دمبل تخت سینه", sets:[6,8,10,12], rest:"90 s", tag:"y", cue:"Dumbbells over the chest, lower until a comfortable stretch, press up in a slight arc."},
-   {ex:"incline_db", name:"Incline dumbbell press", fa:"دمبل بالا سینه", sets:[6,8,10,12], rest:"90 s", tag:"y", cue:"Bench at 30°. Control the lowering, don't clank the dumbbells at the top."},
-   {ex:"crossover", name:"Cable crossover", fa:"کراس اوور", sets:[8,10,10], rest:"60 s", tag:"y", cue:"Step forward, slight forward lean, bring the handles together in front of the lower chest."},
-   {ex:"preacher", name:"Barbell preacher curl", fa:"جلو بازو هالتر لاری", sets:[6,8,10,12], rest:"90 s", tag:"r", swap:"Skip until cleared. The bottom of this lift stretches the elbow under load. Do your physio arm exercises instead.", cue:"Armpits snug on the pad. Curl up, lower under control, stop just short of a locked elbow."},
-   {ex:"db_curl", name:"Dumbbell curl", fa:"جلو بازو دمبل", sets:[6,8,10], rest:"60 s", tag:"y", swap:"Light weight, pain-free range only.", cue:"Elbows pinned to your sides, no swinging. Turn the palms up as you curl."},
-   CARDIO_FIN("walk_tm","Incline treadmill walk","پیاده‌روی شیب‌دار","15 min","Finisher for fat loss: 8–12% incline, about 5 km/h, hands off the rails.")
-  ]},
- {key:"tue", short:"Tue", day:"Tuesday", kind:"rest", label:"Rest", title:"Rest", sub:"Dutch class", fa:"استراحت", time:"",
-  notes:["Rest from training. Walk to reach 8,000–10,000 steps and do your physio exercises (see the <strong>Elbow</strong> tab). Take creatine as usual."], items:[]},
- {key:"wed", short:"Wed", day:"Wednesday", kind:"home", label:"Home", title:"Home A", sub:"Abs · calves · cardio", fa:"خانه: شکم، ساق پا، هوازی", time:"40–45 min",
-  notes:["Do the strength part first, then the cardio."],
-  items:[
-   {ex:"crunch", name:"Crunch", fa:"شکم کراچ", sets:[15,15,20], rest:"45 s", tag:"g", cue:"Hands across the chest, curl the ribs toward the hips, exhale at the top. Don't pull on the neck."},
-   {ex:"flutter", name:"Flutter kicks", fa:"شکم خلبانی", sets:[15,20,20], rest:"45 s", tag:"g", cue:"Lower back pressed to the floor, small fast kicks. Count each leg as one rep."},
-   {ex:"calf", name:"Single-leg calf raise on a step", fa:"ساق پا", sets:[12,12,15,15], rest:"45 s", tag:"g", cue:"Per leg. Heel sinks below the step, 1 s pause, rise high. Hold a full backpack when it gets easy."},
-   {ex:"stairs", name:"Intervals: stairs or fast uphill walk", fa:"هوازی اینتروال", sets:["8 × 30 s"], rest:"60 s easy", tag:"g", fin:true, cue:"30 s hard, 60 s easy. Stairs at home or a hill outside."}
-  ]},
- {key:"thu", short:"Thu", day:"Thursday", kind:"gym", label:"Gym", title:"Session 2", sub:"Back · triceps", fa:"جلسه دوم: زیر بغل، پشت بازو", time:"60–75 min",
-  notes:[WARM],
-  items:[
-   {ex:"row", name:"Bent-over barbell row", fa:"پارویی", sets:[8,10,10], rest:"2 min", tag:"y", swap:"If gripping the bar hurts: seated cable row, neutral grip.", cue:"Hinge to about 45°, flat back. Pull the bar to the belly button, squeeze, lower with control."},
-   {ex:"pullup", name:"Pull-up", fa:"بارفیکس", sets:[8,10,10], rest:"2 min", tag:"r", swap:"Lat pulldown, neutral grip, light. Pull-ups load the elbow at full stretch.", cue:"Hang, pull the chest toward the bar, elbows down and back. Use an assisted machine to hit the reps."},
-   {ex:"rear_fly", name:"Bent-over reverse fly", fa:"صلیبی خم", sets:[8,10,10], rest:"60 s", tag:"y", cue:"Light dumbbells, chest down, soft elbows. Lift out to the sides to shoulder height."},
-   {ex:"pushdown", name:"Cable triceps pushdown", fa:"پشت بازو سیمکش", sets:[6,8,10,12], rest:"90 s", tag:"y", swap:"Light weight, stop before the elbow locks out.", cue:"Elbows pinned at your sides, push down, squeeze 1 s, return to 90°."},
-   {ex:"dip_machine", name:"Seated dip machine", fa:"دیپ دستگاه", sets:[10,12,12], rest:"90 s", tag:"r", swap:"Skip until cleared, or one more set of pushdowns.", cue:"Sit tall, press the handles down until arms are nearly straight, control the way up."},
-   {ex:"rev_pushdown", name:"Reverse-grip pushdown", fa:"پشت بازو سیمکش برعکس", sets:[6,8,10], rest:"60 s", tag:"y", cue:"Palms up on a straight bar, elbows fixed. Lighter than the normal pushdown."},
-   CARDIO_FIN("bike","Bike intervals","دوچرخه اینتروال","5 × 30 s","Finisher: 30 s hard, 90 s easy. About 10 minutes.")
-  ]},
- {key:"fri", short:"Fri", day:"Friday", kind:"home", label:"Home", title:"Home B", sub:"Forearms · abs · cardio", fa:"خانه: ساعد، شکم، هوازی", time:"40–45 min",
-  notes:["Keep it easy: Saturday is leg day. Forearm work doubles as elbow rehab, so only with your physio's OK."],
-  items:[
-   {ex:"wrist_curl", name:"Wrist curl, both directions", fa:"ساعد", sets:[8,10,10], rest:"45 s", tag:"y", cue:"Forearm on your thigh, palm up, then palm down. A light dumbbell or a water bottle."},
-   {ex:"rev_crunch", name:"Reverse crunch", fa:"شکم معکوس", sets:[15,15,20], rest:"45 s", tag:"g", cue:"Curl the hips off the floor toward the chest, lower over 3 seconds."},
-   {ex:"crunch", name:"Crunch", fa:"شکم کراچ", sets:[15,15,20], rest:"45 s", tag:"g", cue:"Slow and controlled, exhale at the top."},
-   {ex:null, name:"Brisk walk or easy jog", fa:"پیاده‌روی تند", sets:["25 min"], rest:"", tag:"g", fin:true, cue:"Talk pace (zone 2). Outdoors when the weather allows."}
-  ]},
- {key:"sat", short:"Sat", day:"Saturday", kind:"gym", label:"Gym", title:"Session 3", sub:"Shoulders · traps · legs", fa:"جلسه سوم: سرشانه، کول، پا", time:"75–90 min",
-  notes:[WARM.replace("arm circles","leg swings")],
-  items:[
-   {ex:"squat", name:"Barbell squat", fa:"اسکات پا", sets:[8,10,10], rest:"2–3 min", tag:"y", swap:"If holding the bar on your back hurts the elbow: hack squat or Smith machine squat.", cue:"Bar on the upper back, brace, sit down between the heels to at least parallel, drive up."},
-   {ex:"leg_press", name:"Leg press", fa:"پرس پا", sets:[8,10,10], rest:"2 min", tag:"g", cue:"Lower until knees reach about 90° without the lower back lifting. Don't lock the knees."},
-   {ex:"leg_curl", name:"Lying leg curl", fa:"پشت ران", sets:[6,8,10,12], rest:"90 s", tag:"g", cue:"Hips pressed into the pad, curl fully, lower over 3 seconds."},
-   {ex:"shoulder_press", name:"Machine shoulder press", fa:"سرشانه دستگاه", sets:[6,8,10], rest:"90 s", tag:"y", swap:"Light weight, stop before lockout.", cue:"Handles at shoulder height, press up without arching the back."},
-   {ex:"lat_raise", name:"Lateral raise", fa:"سرشانه صلیبی", sets:[6,8,10], rest:"60 s", tag:"y", cue:"Soft elbows, raise to shoulder height, lower slowly. Light weight beats heavy swinging."},
-   {ex:"shrug", name:"Dumbbell shrug", fa:"کول دمبل", sets:[10,12,12], rest:"60 s", tag:"y", swap:"If holding dumbbells pulls on the elbow: Smith machine or shrug machine.", cue:"Shoulders straight up toward the ears, 1 s squeeze, no rolling."},
-   CARDIO_FIN("stairs","Stair climber","پله","10–15 min","Finisher: steady pace, light hand contact only.")
-  ]},
- {key:"sun", short:"Sun", day:"Sunday", kind:"home", label:"Home", title:"Home C", sub:"Abs · long cardio · mobility", fa:"خانه: شکم، هوازی طولانی، کشش", time:"45 min",
-  notes:["<strong>Weekly check-in:</strong> average morning weight, waist at the navel, lifts that went up, elbow pain (0–10) and range."],
-  items:[
-   {ex:null, name:"Long walk or bike ride", fa:"پیاده‌روی طولانی", sets:["35 min"], rest:"", tag:"g", cue:"Easy, conversational pace."},
-   {ex:"flutter", name:"Flutter kicks", fa:"شکم خلبانی", sets:[15,20,20], rest:"45 s", tag:"g", cue:"Lower back stays pressed down throughout."},
-   {ex:"hip_flexor", name:"Hip flexor stretch", fa:"کشش جلوی ران", sets:["2 × 30 s"], rest:"each side", tag:"g", cue:"Half-kneeling, tuck the pelvis and shift forward gently."},
-   {ex:"ham_stretch", name:"Hamstring stretch", fa:"کشش پشت ران", sets:["2 × 30 s"], rest:"each side", tag:"g", cue:"Lying down, towel around the foot so the arms stay relaxed."}
-  ]},
+/* ---------- Videos ---------- */
+const YT={
+ bench:"rT7DgCr-3pg", incline_db:"hChjZQhX1Ls", crossover:"taI4XduLpTk", cable_row:"EU7bOadUsNI", db_curl:"ykJmrZ5v0Oo", preacher:"jilTTmyEoYY", lat_raise:"OK1k6NdNo1I",
+ pullup:"TMnxKjdYcME", row:"FEFjR70BPt8", pulldown:"ywhh5jbw1PI", face_pull:"SdyH7cnJnkg", oh_ext:"l4i7iDLiMXs", pushdown:"K--j4Qh9d2s", chest_press:"4YpxZXFADmc",
+ squat:"_vNjV8teHW0", rdl:"lKLYvNGz6mk", leg_press:"cDGOn-yfKJA", seated_curl:"92MK-Qx3TiM", shoulder_press:"e5gJP7quyGk", shrug:"xiLT85G_GuU",
+ split_squat:"8W3WcfGORwg", calf:"HvvqTpTongY", crunch:"2R93PU2IM-Y", flutter:"rqyyVGT3vHI", rev_crunch:"nYcE7-Dhpzk", wrist_curl:"VGkF2NTtao0",
+ walk_tm:"9ccVxEvWtpA", bike:"JjuH3j6ydsA", stairs:"01H1FkKiQMI", hip_flexor:"F55tzqJggAY", ham_stretch:"Il1L75v6gq0"
+};
+
+/* ---------- Sessions ---------- */
+const WARM="<strong>Warm-up, 10 min:</strong> 5 min easy bike, then ramp-up sets for exercise 01: 10 reps at ~40%, 5 reps at ~60%, 3 reps at ~80% of your first working set.";
+const fin=(ex,name,dose,detail,cue)=>({ex,name,sets:[dose],meta:detail,tag:"g",fin:true,cue});
+const DAYS=[
+ {key:"mon",short:"Mon",day:"Monday",kind:"gym",label:"Gym",title:"Gym A",sub:"Chest · biceps",time:"~75 min",notes:[WARM],items:[
+  {ex:"bench",name:"Barbell bench press",sets:[6,8,10],rest:"2–3 min",tag:"r",swap:"Machine chest press, same sets, stop before lockout.",cue:"Shoulder blades back and down, feet planted. Bar to mid-chest, press up and slightly back."},
+  {ex:"incline_db",name:"Incline dumbbell press",sets:[8,10,12],rest:"2 min",tag:"y",cue:"Bench at 30°. Lower until a deep but comfortable stretch, press up in a slight arc."},
+  {ex:"crossover",name:"Cable crossover or pec deck",sets:[10,12,15],rest:"90 s",tag:"y",cue:"Fixed soft elbow. Let the arms open wide for a full stretch, squeeze 1 s together."},
+  {ex:"cable_row",name:"Seated cable row, neutral grip",sets:[10,12],rest:"2 min",tag:"y",why:"Second back session of the week (2 sets).",cue:"Chest tall, pull to the navel, pause 1 s with shoulder blades squeezed."},
+  {ex:"db_curl",name:"Dumbbell curl",sets:[8,10,12],rest:"90 s",tag:"y",swap:"Light weight, pain-free range only.",cue:"Elbows pinned to your sides, no swinging, palms turn up as you curl."},
+  {ex:"preacher",name:"Barbell preacher curl",sets:[10,12],rest:"90 s",tag:"r",swap:"Skip until cleared. The bottom position stretches the elbow under load.",cue:"Armpits on the pad. Lower slowly, stop just short of a locked elbow."},
+  {ex:"lat_raise",name:"Lateral raise",sets:[12,15,15],rest:"60 s",tag:"y",why:"Side delts trained twice a week (also Saturday).",cue:"Light dumbbells, lead with the elbows up to shoulder height, 2 s down."},
+  fin("bike","Easy bike","10–15 min","Zone 2","Finisher. Cycling interferes less with muscle growth than running.")
+ ]},
+ {key:"tue",short:"Tue",day:"Tuesday",kind:"rest",label:"Rest",title:"Rest",sub:"Dutch class",time:"",notes:["Rest from training. Reach 8,000–10,000 steps and do your physio exercises (see <strong>Elbow</strong>). Take creatine as usual."],items:[]},
+ {key:"wed",short:"Wed",day:"Wednesday",kind:"home",label:"Home",title:"Home A",sub:"Legs · calves · abs · intervals",time:"~40 min",notes:["Second leg session of the week, at home. Load: a backpack with books or water bottles."],items:[
+  {ex:"split_squat",name:"Bulgarian split squat",sets:[10,12,15],rest:"90 s",unit:"/ leg",tag:"g",cue:"Rear foot on a chair or sofa. Drop the back knee straight down, front heel planted. Add the backpack when 15 reps is easy."},
+  {ex:"calf",name:"Single-leg calf raise on a step",sets:[12,12,15,15],rest:"45 s",unit:"/ leg",tag:"g",cue:"2 s pause with the heel low in the stretch, then rise as high as possible."},
+  {ex:"crunch",name:"Crunch",sets:[15,15,20],rest:"45 s",tag:"g",cue:"Hands across the chest, curl ribs toward hips, exhale at the top. Don't pull on the neck."},
+  {ex:"flutter",name:"Flutter kicks",sets:[15,20,20],rest:"45 s",unit:"/ leg",tag:"g",cue:"Lower back pressed down, small fast kicks."},
+  fin("stairs","Intervals: stairs or uphill","8 × 30 s","60 s easy between","Hard but controlled. Max two hard interval sessions a week.")
+ ]},
+ {key:"thu",short:"Thu",day:"Thursday",kind:"gym",label:"Gym",title:"Gym B",sub:"Back · triceps",time:"~75 min",notes:[WARM],items:[
+  {ex:"pullup",name:"Pull-up (assisted if needed)",sets:[6,8,10],rest:"2–3 min",tag:"r",swap:"Lat pulldown, neutral grip. Hanging loads the elbow at full stretch.",cue:"Pull the chest toward the bar, elbows down and back. Use the assisted machine to hit the reps."},
+  {ex:"row",name:"Bent-over barbell row",sets:[8,10,12],rest:"2 min",tag:"y",swap:"If gripping the bar hurts: chest-supported machine row.",cue:"Hinge to 45°, flat back. Pull to the belly button, lower with control."},
+  {ex:"pulldown",name:"Lat pulldown, neutral grip",sets:[10,12,12],rest:"90 s",tag:"y",cue:"Slight lean back, full stretch at the top, pull to the upper chest."},
+  {ex:"face_pull",name:"Face pull",sets:[12,15,15],rest:"60 s",tag:"y",cue:"Rope at face height, pull toward the forehead, elbows high."},
+  {ex:"oh_ext",name:"Overhead cable triceps extension",sets:[8,10,12],rest:"90 s",tag:"r",why:"Overhead triceps work grew ~40% more muscle than arms-down in a 12-week study.",swap:"Needs a deep elbow bend under load. Do pushdowns instead until cleared.",cue:"Face away from the cable, elbows by your ears, lower behind the head, extend."},
+  {ex:"pushdown",name:"Cable triceps pushdown",sets:[10,12,15],rest:"60 s",tag:"y",swap:"Light weight, stop before the elbow locks.",cue:"Elbows pinned at your sides, push down, squeeze 1 s."},
+  {ex:"chest_press",name:"Machine chest press",sets:[10,12],rest:"90 s",tag:"y",why:"Second chest session of the week (2 sets).",cue:"Handles at mid-chest, press to almost straight arms."},
+  fin("bike","Bike intervals","5 × 30 s","90 s easy between","Finisher, about 10 minutes.")
+ ]},
+ {key:"fri",short:"Fri",day:"Friday",kind:"home",label:"Home",title:"Home B",sub:"Abs · calves · forearms · cardio",time:"~40 min",notes:["Easy day: Saturday is leg day. Forearm work doubles as elbow rehab, only with your physio's OK."],items:[
+  {ex:"rev_crunch",name:"Reverse crunch",sets:[12,15,15],rest:"45 s",tag:"g",cue:"Curl the hips toward the chest, lower over 3 seconds."},
+  {ex:"crunch",name:"Crunch",sets:[15,15,20],rest:"45 s",tag:"g",cue:"Slow, exhale at the top."},
+  {ex:"calf",name:"Calf raise on a step (both legs)",sets:[15,15,20],rest:"45 s",tag:"g",cue:"Full stretch, full rise. Hold the backpack once 20 reps is easy."},
+  {ex:"wrist_curl",name:"Wrist curl, both directions",sets:[10,12,15],rest:"45 s",tag:"y",cue:"Forearm on your thigh, palm up then palm down, light dumbbell or bottle."},
+  fin("walk_tm","Steady cardio: bike or brisk walk","25 min","Zone 2 · talk pace","Easy enough to hold a conversation.")
+ ]},
+ {key:"sat",short:"Sat",day:"Saturday",kind:"gym",label:"Gym",title:"Gym C",sub:"Legs · shoulders · traps",time:"~85 min",notes:[WARM],items:[
+  {ex:"squat",name:"Barbell squat",sets:[6,8,10],rest:"3 min",tag:"y",swap:"If holding the bar on your back hurts the elbow: hack squat or Smith machine squat.",cue:"Brace, sit down between the heels to at least parallel, drive up."},
+  {ex:"rdl",name:"Romanian deadlift",sets:[8,10,12],rest:"2–3 min",tag:"y",swap:"If the grip pulls on the elbow: use lifting straps, or 45° back extensions.",cue:"Soft knees, push the hips back, bar close to the legs, lower until a strong hamstring stretch."},
+  {ex:"leg_press",name:"Leg press",sets:[10,12,15],rest:"2 min",tag:"g",cue:"Lower until knees reach about 90° without the lower back lifting."},
+  {ex:"seated_curl",name:"Seated leg curl",sets:[8,10,12],rest:"90 s",tag:"g",why:"Seated curls grew more hamstring than lying curls (about 14% vs 9%).",cue:"Knee lined up with the pivot, curl fully, lower over 3 seconds."},
+  {ex:"shoulder_press",name:"Machine shoulder press",sets:[6,8,10],rest:"2 min",tag:"y",swap:"Light, stop before lockout.",cue:"Handles at shoulder height, press up without arching your back."},
+  {ex:"lat_raise",name:"Lateral raise",sets:[10,12,15],rest:"60 s",tag:"y",cue:"Lead with the elbows, 2 s down."},
+  {ex:"shrug",name:"Dumbbell shrug",sets:[10,12,12],rest:"60 s",tag:"y",swap:"If holding dumbbells pulls on the elbow: shrug machine or Smith machine.",cue:"Shoulders straight up, 1 s squeeze, no rolling."}
+ ]},
+ {key:"sun",short:"Sun",day:"Sunday",kind:"home",label:"Home",title:"Home C",sub:"Long walk · abs · mobility",time:"~45 min",notes:["<strong>Weekly check-in:</strong> average morning weight, waist at the navel, lifts that went up, elbow pain (0–10) and range."],items:[
+  fin(null,"Long walk or bike ride","35–40 min","Easy, outdoors","Conversational pace."),
+  {ex:"flutter",name:"Flutter kicks",sets:[15,20,20],rest:"45 s",unit:"/ leg",tag:"g",cue:"Lower back pressed down."},
+  {ex:"hip_flexor",name:"Hip flexor stretch",sets:["2 × 30 s"],meta:"each side",tag:"g",cue:"Half-kneeling, tuck the pelvis, shift forward gently."},
+  {ex:"ham_stretch",name:"Hamstring stretch",sets:["2 × 30 s"],meta:"each side",tag:"g",cue:"Lying down, towel around the foot so the arms stay relaxed."}
+ ]},
  {sep:true},
- {key:"supps", short:"Supps", day:"Supplements", kind:"info", label:"مکمل", title:"", sub:"What to take and when", fa:"برنامه مکمل", time:"", notes:[], items:[]},
- {key:"food", short:"Food", day:"Nutrition", kind:"info", label:"تغذیه", title:"", sub:"Calories · protein · sample day", fa:"برنامه غذایی", time:"", notes:[], items:[]},
- {key:"elbow", short:"Elbow", day:"Elbow", kind:"info", label:"Rehab", title:"", sub:"Physio-approved exercises only", fa:"توانبخشی آرنج", time:"~10 min · 1–3× a day", notes:[], items:[]}
+ {key:"program",short:"Plan",day:"The program",kind:"info",label:"Why",title:"",sub:"Structure · volume · progression",time:"",notes:[],items:[]},
+ {key:"food",short:"Food",day:"Nutrition",kind:"info",label:"Diet",title:"",sub:"Calories · protein · sample day",time:"",notes:[],items:[]},
+ {key:"supps",short:"Supps",day:"Supplements",kind:"info",label:"Daily",title:"",sub:"What to take and when",time:"",notes:[],items:[]},
+ {key:"elbow",short:"Elbow",day:"Elbow",kind:"info",label:"Rehab",title:"",sub:"Physio-approved exercises only",time:"",notes:[],items:[]},
+ {key:"sources",short:"Refs",day:"Sources",kind:"info",label:"Science",title:"",sub:"Research behind the plan",time:"",notes:[],items:[]}
 ];
 
-const PAGES = {
-supps:`
-<div class="grid2 supps">
-  <div class="panel supp"><div class="supp-head"><h3>Creatine monohydrate</h3><span class="pill hi">Essential</span></div><div class="fa supp-fa">کراتین مونوهیدرات</div>
-    <dl class="kv"><div><dt>Dose</dt><dd>5 g</dd></div><div><dt>When</dt><dd>Every day, any time. Gym days: in your post-workout shake.</dd></div></dl><p>The most researched sports supplement. More reps per set, which adds up to more strength and muscle.</p></div>
-  <div class="panel supp"><div class="supp-head"><h3>Whey protein</h3><span class="pill hi">Essential</span></div><div class="fa supp-fa">پروتئین وی</div>
-    <dl class="kv"><div><dt>Dose</dt><dd>1 scoop · 25–30 g</dd></div><div><dt>When</dt><dd>After training, or as a snack when food falls short of 140 g protein.</dd></div></dl><p>Convenient protein that builds and protects muscle while you lose fat.</p></div>
-  <div class="panel supp"><div class="supp-head"><h3>Vitamin D3</h3><span class="pill md">Recommended</span></div><div class="fa supp-fa">ویتامین دی</div>
-    <dl class="kv"><div><dt>Dose</dt><dd>1,000–2,000 IU</dd></div><div><dt>When</dt><dd>With breakfast, October to March.</dd></div></dl><p>Little sun in Belgium in winter. Supports bone health, relevant after a fracture.</p></div>
-  <div class="panel supp"><div class="supp-head"><h3>Omega-3 fish oil</h3><span class="pill md">Optional</span></div><div class="fa supp-fa">امگا ۳</div>
-    <dl class="kv"><div><dt>Dose</dt><dd>1–2 g EPA+DHA</dd></div><div><dt>When</dt><dd>With a meal.</dd></div></dl><p>Only if you eat oily fish less than twice a week.</p></div>
-  <div class="panel supp"><div class="supp-head"><h3>Caffeine (coffee)</h3><span class="pill lo">Optional</span></div><div class="fa supp-fa">کافئین</div>
-    <dl class="kv"><div><dt>Dose</dt><dd>1–2 cups</dd></div><div><dt>When</dt><dd>30–60 min before the gym, not after 14:00.</dd></div></dl><p>Better focus and performance in the session.</p></div>
+/* ---------- Info pages ---------- */
+const VOL=[
+ ["Chest","Mon 9 · Thu 2",11,"10–20"],["Back (lats, mid-back)","Mon 2 · Thu 9",11,"10–20"],["Quads","Sat 6 · Wed 3",9,"10–20"],
+ ["Hamstrings","Sat 6",6,"10–20"],["Glutes","Sat 6 · Wed 3 (+ indirect)",11,"10–20"],["Side delts","Mon 3 · Sat 3 (+ presses)",8,"8–16"],
+ ["Rear delts","Thu 3 (+ rows)",9,"8–16"],["Biceps","Mon 5 (+ rows, pull-ups)",10,"8–16"],["Triceps","Thu 6 (+ presses)",11,"8–16"],
+ ["Calves","Wed 4 · Fri 3",7,"8–16"],["Abs","Wed 6 · Fri 6 · Sun 3",15,"8–16"]
+];
+const volRows=VOL.map(([m,where,n,rng])=>{const [lo,hi]=rng.split("–").map(Number);return `<tr><td><b>${m}</b><div class="bar" aria-hidden="true"><span class="zone" style="left:${lo/24*100}%;right:${100-hi/24*100}%"></span><i style="width:${Math.min(n,24)/24*100}%"></i></div></td><td>${where}</td><td class="n">${n}</td><td class="n">${rng}</td></tr>`}).join("");
+const blockRows=BLOCK.map((b,i)=>`<li class="${PH&&phaseOf(WEEK)===i?"cur":""}"><div class="wk">Week ${b.w}</div><div><b>${b.name}</b> <span class="pill lo">RIR ${b.rir}</span><p>${b.text}</p></div></li>`).join("");
+const PAGES={
+program:`
+<div class="panel">
+  <h3>How the week is built</h3>
+  <p>Your three-day split stays: chest and biceps, back and triceps, legs and shoulders. Each gym session now caps one muscle at about 9–11 hard sets, because research on sets per session finds growth levels off around there. Extra volume moves to a second, shorter exposure later in the week (2 back sets on Monday, 2 chest sets on Thursday, legs again at home on Wednesday).</p>
+  <p>All gym sessions use your ascending-rep sets (6 · 8 · 10). Studies find this pyramid style builds the same muscle as straight sets, so it's a matter of preference.</p>
 </div>
-<div class="panel" style="margin-top:12px">
-  <h3>Daily timing</h3>
-  <div class="tbl"><table>
-    <thead><tr><th>Time</th><th>Gym day</th><th>Home or rest day</th></tr></thead>
-    <tbody>
-      <tr><td class="n">Breakfast</td><td>Vitamin D3 · omega-3</td><td>Vitamin D3 · omega-3</td></tr>
-      <tr><td class="n">Before training</td><td>Coffee, 30–60 min before</td><td>—</td></tr>
-      <tr><td class="n">After training</td><td>Whey shake + 5 g creatine</td><td>—</td></tr>
-      <tr><td class="n">Any time</td><td>—</td><td>5 g creatine (in water or yogurt) · whey only if protein is short</td></tr>
-    </tbody>
-  </table></div>
+<div class="panel">
+  <h3>12-week block</h3>
+  <ol class="block">${blockRows}</ol>
+</div>
+<div class="panel">
+  <h3>Weekly hard sets per muscle</h3>
+  <p>Direct sets per week, counting indirect work as half a set. The dashed box shows the target range; most muscles grow best between 10 and 20 sets.</p>
+  <div class="tbl"><table><thead><tr><th>Muscle</th><th>Where</th><th>Sets</th><th>Target</th></tr></thead><tbody>${volRows}</tbody></table></div>
+  <p class="cite" style="margin-top:10px">Hamstrings and calves sit below target in block 1 on purpose: legs are your largest muscles and the block also includes a calorie deficit. Block 2 adds a set to each.</p>
 </div>
 <div class="grid2">
-  <div class="panel"><h3>Creatine notes</h3><ul class="plain">
-    <li>Plain creatine monohydrate powder is enough. No loading phase, no special versions.</li>
-    <li>Take it every day, including rest days. Effects build over 3–4 weeks.</li>
-    <li>Expect 1–2 kg extra on the scale in the first weeks. It's water inside the muscle, not fat.</li>
-    <li>Drink 2.5–3 L of water a day.</li></ul></div>
-  <div class="panel"><h3>Not worth buying</h3><ul class="plain">
-    <li>BCAAs: useless if you eat enough protein.</li>
-    <li>Fat burners and "thermogenics".</li>
-    <li>Testosterone boosters.</li>
-    <li>Mass gainers: you are trying to lose fat.</li></ul></div>
+  <div class="panel"><h3>Progression rules</h3><ol class="plain">
+    <li>Use the RIR of the current week (shown at the top of the page).</li>
+    <li>When every set hits its target reps at that RIR, add weight next session: +2.5 kg on barbell and leg lifts, the next dumbbell or pin on the rest.</li>
+    <li>If reps drop two sessions in a row, keep the weight, check sleep and food, and take the deload early if needed.</li>
+    <li>Log your heaviest set in the kg box on each card.</li></ol></div>
+  <div class="panel"><h3>Rest and effort</h3><ul class="plain">
+    <li>Compound lifts: 2–3 minutes. Isolation: 60–90 seconds. Longer rests on big lifts support more growth.</li>
+    <li>Train close to failure: most sets end with 1–2 reps left. Muscle growth increases as sets get closer to failure.</li>
+    <li>Never grind out reps on red or yellow exercises.</li></ul></div>
 </div>
-<div class="panel"><p>You are recovering from a fracture: tell your doctor which supplements you take, and ask about checking your vitamin D level. Ask before adding calcium tablets; dairy in your diet usually covers it.</p></div>`,
+<div class="grid2">
+  <div class="panel"><h3>Cardio and steps</h3><ul class="plain">
+    <li>8,000–10,000 steps a day: the range where health benefits level off for adults under 60.</li>
+    <li>Prefer cycling for intervals; running showed more interference with muscle growth.</li>
+    <li>Do cardio after lifting or on home days, not before lifting.</li></ul></div>
+  <div class="panel"><h3>Sleep</h3><p>7–9 hours. In a diet study, people sleeping 5.5 h instead of 8.5 h lost more muscle and less fat on the same calories.</p></div>
+</div>`,
 food:`
 <div class="panel">
   <h3>Daily targets</h3>
-  <p>A small calorie deficit with high protein: you lose fat while still building muscle. Estimated maintenance is about 2,500 kcal.</p>
+  <p>A small calorie deficit with high protein lets you lose fat while still building muscle. Aim to lose 0.3–0.5 kg a week; slower loss protects muscle.</p>
   <div class="tbl"><table>
     <thead><tr><th>Target</th><th>Gym day</th><th>Home or rest day</th></tr></thead>
     <tbody>
       <tr><td>Calories</td><td class="n">~2,300 kcal</td><td class="n">~2,100 kcal</td></tr>
-      <tr><td>Protein</td><td class="n">140–150 g</td><td class="n">140–150 g</td></tr>
-      <tr><td>Fat</td><td class="n">60–70 g</td><td class="n">60–70 g</td></tr>
+      <tr><td>Protein</td><td class="n">140–160 g</td><td class="n">140–160 g</td></tr>
+      <tr><td>Fat</td><td class="n">55–70 g</td><td class="n">55–70 g</td></tr>
       <tr><td>Carbohydrates</td><td class="n">~260 g</td><td class="n">~210 g</td></tr>
       <tr><td>Water</td><td class="n">2.5–3 L</td><td class="n">2.5–3 L</td></tr>
     </tbody>
   </table></div>
+  <p class="cite" style="margin-top:10px">Protein is set at about 2.0–2.2 g per kg. That's the top of the general sports-nutrition range, because trained people in a deficit need more to keep their muscle.</p>
 </div>
 <div class="panel">
-  <h3>Sample day · ~2,100 kcal · ~155 g protein</h3>
+  <h3>Sample day · ~2,150 kcal · ~155 g protein</h3>
   <div class="tbl"><table>
     <thead><tr><th>Meal</th><th>Food</th><th>Protein</th></tr></thead>
     <tbody>
@@ -310,20 +336,54 @@ food:`
 </div>
 <div class="grid2">
   <div class="panel"><h3>Rules</h3><ul class="plain">
-    <li>30–40 g protein in each of 4 meals.</li>
+    <li>4 meals, 30–40 g protein each, every 3–4 hours.</li>
     <li>Half the plate vegetables at lunch and dinner.</li>
     <li>Limit alcohol, sugary drinks and fried snacks.</li>
     <li>Log food in an app for the first 2 weeks to learn portions.</li></ul></div>
   <div class="panel"><h3>When to adjust</h3><ul class="plain">
     <li>Weigh 3–4 mornings a week; use the weekly average.</li>
-    <li>Target: −0.25 to −0.5 kg a week, waist shrinking, lifts going up.</li>
-    <li>No change for 3 weeks → eat 150–200 kcal less.</li>
-    <li>Losing more than 0.7 kg a week or getting weaker → eat 150–200 kcal more.</li></ul></div>
+    <li>No change in weight or waist for 3 weeks → eat 150–200 kcal less.</li>
+    <li>Losing more than 0.7 kg a week, or lifts dropping → eat 150–200 kcal more.</li></ul></div>
 </div>`,
+supps:`
+<div class="grid2" style="margin-top:0">
+${[
+ ["Creatine monohydrate","Essential","hi","3–5 g a day","Every day, any time. Gym days: in your post-workout shake.","The most effective supplement for training: more reps per set and more lean mass. Optional faster start: 20 g a day (4 × 5 g) for 5–7 days."],
+ ["Whey protein","Essential","hi","1 scoop, 25–30 g","After training, or when food falls short of your protein target.","Convenient protein, not magic. Only needed when meals don't reach 140–160 g."],
+ ["Vitamin D3","Recommended","md","1,000–2,000 IU","With breakfast, October to March.","Little sun in Belgium in winter. Supports bone health, relevant after your fracture. Ask your doctor to check your level."],
+ ["Omega-3 fish oil","Optional","md","1–2 g EPA+DHA","With a meal.","Only if you eat oily fish less than twice a week."],
+ ["Caffeine (coffee)","Optional","lo","1–2 cups","30–60 min before the gym, not after 14:00.","Better focus and performance. Late caffeine costs sleep, which costs muscle."]
+].map(([n,p,pc,dose,when,why])=>`<div class="panel supp"><div class="supp-head"><h3>${n}</h3><span class="pill ${pc}">${p}</span></div><dl class="kv"><div><dt>Dose</dt><dd>${dose}</dd></div><div><dt>When</dt><dd>${when}</dd></div></dl><p>${why}</p></div>`).join("")}
+</div>
+<div class="panel">
+  <h3>Daily timing</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Time</th><th>Gym day</th><th>Home or rest day</th></tr></thead>
+    <tbody>
+      <tr><td class="n">Breakfast</td><td>Vitamin D3 · omega-3</td><td>Vitamin D3 · omega-3</td></tr>
+      <tr><td class="n">Before training</td><td>Coffee, 30–60 min before</td><td>—</td></tr>
+      <tr><td class="n">After training</td><td>Whey + 5 g creatine</td><td>—</td></tr>
+      <tr><td class="n">Any time</td><td>—</td><td>5 g creatine · whey only if protein is short</td></tr>
+    </tbody>
+  </table></div>
+</div>
+<div class="grid2">
+  <div class="panel"><h3>Creatine notes</h3><ul class="plain">
+    <li>Plain creatine monohydrate is the best-studied form; skip expensive versions.</li>
+    <li>Expect 1–2 kg on the scale in the first weeks: water in the muscle, not fat.</li>
+    <li>Long-term studies in healthy adults show no harm at normal doses.</li></ul></div>
+  <div class="panel"><h3>Not worth buying</h3><ul class="plain">
+    <li>BCAAs (pointless with enough protein)</li><li>Fat burners</li><li>Testosterone boosters</li><li>Mass gainers</li></ul></div>
+</div>
+<div class="panel"><p>Recovering from a fracture: tell your doctor which supplements you take. Ask before adding calcium tablets; dairy in your diet usually covers it.</p></div>`,
 elbow:`
 <div class="panel">
-  <h3>Mobility routine</h3>
-  <p>Your physiotherapist's program comes first; do only the exercises they approve. Warm the joint first. Little and often beats one hard session.</p>
+  <h3>Where you are</h3>
+  <p>Typical elbow-fracture rehab protocols restore range of motion first, add light resistance from about week 2–6, and progressively heavier resistance from about weeks 7–12, with return to full activity around 3–6 months. You're about 3 months in with range still limited, so loading the arm is reasonable, but heavy lockout and full-stretch lifts wait for your physio's clearance. That's why some exercises are red.</p>
+  <p><strong>Ask your physio:</strong> which yellow exercises you can start and at what weight · when red lifts are allowed · whether the bone is fully healed.</p>
+</div>
+<div class="panel">
+  <h3>Mobility routine · 10 min, 1–3× a day</h3>
   <div class="tbl"><table>
     <thead><tr><th>Exercise</th><th>How</th><th>Dose</th></tr></thead>
     <tbody>
@@ -334,12 +394,38 @@ elbow:`
       <tr><td>Grip squeeze</td><td>Squeeze a soft ball or rolled towel.</td><td class="n">2 × 15</td></tr>
     </tbody>
   </table></div>
+  <p class="cite" style="margin-top:10px">Do only the exercises your physio approves.</p>
 </div>
 <div class="grid2">
   <div class="panel"><h3>Pain rule</h3><p>Discomfort up to 3/10 that settles within 24 hours is usually acceptable. Sharp pain, or pain that is worse the next day, means reduce or stop that exercise.</p></div>
   <div class="panel"><h3>Contact your physio or doctor if</h3><ul class="plain">
     <li>Swelling, heat or redness is increasing</li><li>Tingling or numbness in the ring and little fingers</li>
     <li>You lose range of motion after training</li><li>A painful click or catch</li></ul></div>
+</div>`,
+sources:`
+<div class="panel">
+  <h3>Research behind the plan</h3>
+  <ol class="src">
+    <li>Pelland et al. (2026), <i>Sports Medicine</i>: more weekly sets build more muscle with diminishing returns; frequency matters little once volume is equal. <a href="https://train.fitness/personal-trainer-blogs/not-all-sets-are-created-equal" target="_blank" rel="noopener">Summary</a> · <a href="https://biolayne.com/reps/issue-31/the-king-of-volume-metas/" target="_blank" rel="noopener">Review</a></li>
+    <li>Remmert et al. (2025, preprint): growth from extra sets in one session levels off around 11 sets per muscle. <a href="https://sportrxiv.org/index.php/server/preprint/view/537" target="_blank" rel="noopener">SportRxiv</a></li>
+    <li>Schoenfeld et al. (2017) and later analyses: 10+ weekly sets per muscle outperform fewer; 10–20 is the practical range. <a href="https://builtwithscience.com/fitness-tips/how-many-sets-per-muscle-group-per-week/" target="_blank" rel="noopener">Overview</a></li>
+    <li>Robinson et al. (2024), <i>Sports Medicine</i>: training closer to failure increases muscle growth; strength is less affected. <a href="https://www.fau.edu/newsdesk/articles/muscle-growth-strength-study" target="_blank" rel="noopener">FAU</a></li>
+    <li>Singer et al. (2024): rest periods over 60 seconds favour hypertrophy. <a href="https://biolayne.com/reps/issue-28/which-between-set-rest-interval-is-best-for-muscle-growth/" target="_blank" rel="noopener">Review</a></li>
+    <li>Low- vs high-load meta-analysis: similar growth across rep ranges when sets are hard; heavier loads build more strength. <a href="https://cka.ca/en/kas-current-issues/strength-and-hypertrophy-adaptations-between-low--vs-high-load-resistance-training" target="_blank" rel="noopener">CKA</a></li>
+    <li>Cardozo et al. (2023): pyramid sets are not better or worse than traditional sets. <a href="https://biolayne.com/reps/issue-22/climbing-the-pyramid-of-gains-pyramidal-training/" target="_blank" rel="noopener">Review</a></li>
+    <li>Bartolomei et al. (2021), <i>J Strength Cond Res</i>: split and full-body routines gave similar results in trained men. <a href="https://cris.unibo.it/bitstream/11585/906365/3/total%20split%20PDF.pdf" target="_blank" rel="noopener">PDF</a></li>
+    <li>Maeo et al. (2021), <i>Med Sci Sports Exerc</i>: seated leg curls grew the hamstrings more than lying curls. <a href="https://sci-sport.com/en/hypertrophy-and-hamstring-protection-seated-prone-leg-curl/" target="_blank" rel="noopener">Summary</a></li>
+    <li>Maeo et al. (2022), <i>Eur J Sport Sci</i>: overhead triceps extensions grew more triceps than arms-down extensions. <a href="https://sci-sport.com/en/triceps-hypertrophy-impact-of-arm-position/" target="_blank" rel="noopener">Summary</a></li>
+    <li>Bell et al. (2023), <i>Sports Medicine – Open</i>: deload consensus, typically about a week every 4–8 weeks. <a href="https://shura.shu.ac.uk/32417/1/s40798-023-00633-0.pdf" target="_blank" rel="noopener">PDF</a></li>
+    <li>Lundberg et al. (2022): concurrent cardio barely affects whole-muscle growth; running interfered more than cycling. <a href="https://biolayne.com/reps/issue-8/concurrent-training-cardio-will-probably-not-kill-your-gains/" target="_blank" rel="noopener">Review</a></li>
+    <li>Jäger et al. (2017), ISSN position stand on protein: 1.4–2.0 g/kg, 20–40 g per meal every 3–4 h; more in a deficit. <a href="https://exerciseandsportnutritionlab.com/issn-updated-protein-exercise-position-stand-published/" target="_blank" rel="noopener">Summary</a></li>
+    <li>Helms et al. (2014), <i>JISSN</i>: lose 0.5–1% of body weight per week; high protein during a deficit. <a href="https://jissn.biomedcentral.com/track/pdf/10.1186/1550-2783-11-20" target="_blank" rel="noopener">PDF</a></li>
+    <li>Barakat et al. (2020), <i>Strength Cond J</i>: trained people can build muscle and lose fat at the same time. <a href="https://lida.sport-iat.de/ta/Record/4066252?lng=en" target="_blank" rel="noopener">Record</a></li>
+    <li>Kreider et al. (2017), ISSN position stand on creatine: 3–5 g/day, optional loading, safe in healthy adults. <a href="https://exerciseandsportnutritionlab.com/new-issn-position-stand-on-creatine-supplementation/" target="_blank" rel="noopener">Summary</a></li>
+    <li>Paluch et al. (2022), <i>Lancet Public Health</i>: mortality benefit levels off at 8,000–10,000 steps under age 60. <a href="https://hospitalhealthcare.com/specialisms/cardiovascular/mortality-benefit-from-higher-daily-steps-plateaus/" target="_blank" rel="noopener">Summary</a></li>
+    <li>Nedeltcheva et al. (2010), <i>Ann Intern Med</i>: short sleep during a diet cut fat loss and increased muscle loss. <a href="https://admin.globalfamilydoctor.com/Resources/A-Ztopiclisting/JournalWatch/Insufficientsleepunderminesweightlossefforts.aspx" target="_blank" rel="noopener">Summary</a></li>
+    <li>Radial head fracture rehab protocol: timeline for range of motion and progressive resistance. <a href="https://www.drgarrettkerns.com/pdfs/office-forms/physical-therapy-protocols/elbow/radial-head-orif-protocol.pdf" target="_blank" rel="noopener">PDF</a></li>
+  </ol>
 </div>`
 };
 
@@ -351,32 +437,40 @@ DAYS.forEach(d=>{
   if(d.sep){const s=document.createElement("span");s.className="sep";s.setAttribute("aria-hidden","true");daysEl.appendChild(s);return}
   const b=document.createElement("button");b.type="button";b.className="day "+d.kind+(d.key===todayKey?" is-today":"");b.id="tab-"+d.key;
   b.setAttribute("role","tab");b.setAttribute("aria-controls","main");
-  b.innerHTML=`<b>${d.short}</b><span class="${/[؀-ۿ]/.test(d.label)?"fa":""}">${d.label}</span><i aria-hidden="true"></i>`;
+  b.innerHTML=`<b>${d.short}</b><span>${d.label}</span><i aria-hidden="true"></i>`;
   b.addEventListener("click",()=>show(d.key,true));daysEl.appendChild(b);
 });
 const TAG={g:"Green",y:"Yellow",r:"Red"};
-function setsBlock(it){
+function setsBlock(it,gym){
   const cells=it.sets.map((r,i)=>typeof r==="number"?`<div class="set"><small>Set ${i+1}</small><b>${r}</b></div>`:`<div class="set"><small>Dose</small><b>${r}</b></div>`).join("");
-  const rest=it.rest?`<div class="set rest"><small>Rest</small><b>${it.rest}</b></div>`:"";
-  return `<div class="sets">${cells}${rest}</div>`;
+  const extra=[];
+  if(it.unit) extra.push(`<div class="set meta"><small>Reps</small><b>${it.unit}</b></div>`);
+  if(it.rest) extra.push(`<div class="set meta"><small>Rest</small><b>${it.rest}</b></div>`);
+  if(gym&&!it.fin&&PH) extra.push(`<div class="set meta"><small>RIR</small><b>${PH.rir}</b></div>`);
+  if(it.meta) extra.push(`<div class="set meta"><small>Detail</small><b>${it.meta}</b></div>`);
+  return `<div class="sets">${cells}${extra.join("")}</div>`;
 }
 function videoBlock(it){
   const id=it.ex&&YT[it.ex]; if(!id) return "";
   return `<div class="video" data-id="${id}"><button type="button" aria-label="Play demo video: ${it.name}"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/${id}/hqdefault.jpg"><span class="play" aria-hidden="true"></span><span class="lbl">Demo</span></button></div>`;
 }
 function show(key,user){
-  const d=DAYS.find(x=>x.key===key)||DAYS.find(x=>x.key==="mon");
+  const d=DAYS.find(x=>x.key===key)||DAYS[0];
   document.querySelectorAll(".day").forEach(b=>b.setAttribute("aria-selected",String(b.id==="tab-"+d.key)));
-  let h=`<div class="session-head"><h2>${d.day}${d.title?`<em> · ${d.title}</em>`:""}</h2><div class="session-meta">${[d.sub,d.time].filter(Boolean).join(" · ")}</div></div><div class="session-fa fa">${d.fa}</div>`;
-  if(d.notes.length) h+=`<ul class="notes">${d.notes.map(n=>`<li>${n}</li>`).join("")}</ul>`;
-  if(d.kind==="gym" && d.items.some(i=>i.tag==="r")) h=h.replace(/<\/ul>$/,`<li class="warn"><strong>Elbow:</strong> red exercises load the elbow at full stretch or lockout. Use the swap shown on each card until your physio clears them.</li></ul>`);
+  let notes=[...d.notes];
+  if(d.kind==="gym"&&PH) notes.unshift(`<strong>Week ${WEEK} · ${PH.name}:</strong> ${PH.text}`);
+  if(d.kind==="gym"&&d.items.some(i=>i.tag==="r")) notes.push(`<strong>Elbow:</strong> red exercises load the elbow at lockout or full stretch. Use the swap on each card until your physio clears them.`);
+  let h=`<div class="session-head"><h2>${d.day}${d.title?`<em> · ${d.title}</em>`:""}</h2><div class="session-meta">${[d.sub,d.time].filter(Boolean).join(" · ")}</div></div>`;
+  if(notes.length) h+=`<ul class="notes">${notes.map(n=>`<li class="${n.startsWith("<strong>Week")?"phase":n.startsWith("<strong>Elbow")?"warn":""}">${n}</li>`).join("")}</ul>`;
   if(PAGES[d.key]) h+=PAGES[d.key];
   if(d.items.length){
+    const gym=d.kind==="gym";
     h+=`<ol class="list">`+d.items.map((it,i)=>{
-      const lk=`gym2.load.${d.key}.${i}`;
-      const logged=(d.kind==="gym"&&!it.fin)?`<label class="log">Top set kg <input id="${lk}" inputmode="decimal" value="${(store.get(lk)||"").replace(/"/g,"")}"></label>`:"";
+      const lk=`gym3.load.${d.key}.${i}`;
+      const logged=(gym&&!it.fin)?`<label class="log">Top set kg <input id="${lk}" inputmode="decimal" value="${(store.get(lk)||"").replace(/"/g,"")}"></label>`:"";
       const swap=it.swap?`<p class="swap ${it.tag==="r"?"r":""}"><strong>${it.tag==="r"?"Until your physio clears it:":"Elbow:"}</strong> ${it.swap}</p>`:"";
-      return `<li class="ex${it.fin?" fin":""}">${videoBlock(it)}<div class="body"><div class="ex-title"><h3>${it.name}</h3><span class="fa">${it.fa}</span></div>${setsBlock(it)}<p class="cue">${it.cue}</p>${swap}<div class="foot"><span class="tag ${it.tag}">${TAG[it.tag]} · elbow</span>${logged}</div></div></li>`;
+      const why=it.why?`<p class="why">${it.why}</p>`:"";
+      return `<li class="ex${it.fin?" fin":""}">${videoBlock(it)}<div class="body"><div class="ex-title"><h3>${it.name}</h3></div>${why}${setsBlock(it,gym)}<p class="cue">${it.cue}</p>${swap}<div class="foot"><span class="tag ${it.tag}">${TAG[it.tag]} · elbow</span>${logged}</div></div></li>`;
     }).join("")+`</ol>`;
   }
   main.innerHTML=h;
