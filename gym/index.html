@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Gym Plan</title>
+<meta name="description" content="12-week training program: three gym days, three home days, phases, effort targets and exercise demo videos.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#ECEFF1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1114" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: a coach's program sheet — header with block summary, phase switcher, sticky week strip, one session per view; each exercise = demo video + prescription grid. */
+:root{
+  --bg:#ECEFF1; --surface:#FFFFFF; --ink:#14181C; --muted:#56616B; --line:#D3D9DE;
+  --accent:#2347D6; --accent-soft:#E3E9FF; --chip:#E2E7EB; --video:#0E1114;
+  --g:#1D8048; --y:#A86E12; --r:#BF3428;
+  --display:"Barlow Condensed","Arial Narrow","Roboto Condensed",sans-serif;
+  --body:"Barlow","Segoe UI",system-ui,-apple-system,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0E1114; --surface:#171B20; --ink:#E8ECF0; --muted:#9BA6B1; --line:#2A3138;
+  --accent:#7D9BFF; --accent-soft:#1E2747; --chip:#20262C; --video:#000;
+  --g:#4CC07D; --y:#E2AA45; --r:#F0695C; color-scheme:dark }}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--body);margin:0;padding-top:env(safe-area-inset-top,0px)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+[hidden]{display:none!important}
+
+header.top{padding-block:22px 6px;display:grid;gap:14px}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font:700 42px/1 var(--display);letter-spacing:.01em;margin:6px 0 0;text-transform:uppercase}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+@media (min-width:700px){.facts{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.facts div{background:var(--surface);padding:10px 12px;min-width:0}
+.facts dt{font:600 11px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.facts dd{margin:5px 0 0;font:700 20px/1.1 var(--display);font-variant-numeric:tabular-nums}
+
+.phases{display:grid;gap:8px}
+.phase-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.ph{appearance:none;font:inherit;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 10px;cursor:pointer;min-width:0}
+.ph b{display:block;font:700 16px/1.1 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.ph span{display:block;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.ph[aria-pressed="true"] b{color:var(--accent)}
+.ph .now{font:600 10px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-left:4px}
+.phase-note{font-size:14px;color:var(--muted);margin:0;max-width:75ch}
+.phase-note strong{color:var(--ink);font-weight:600}
+
+nav.week{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);margin-top:14px}
+.days{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.day{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:6px 2px 7px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font:inherit;flex:1 0 42px;min-width:42px}
+.day b{font:700 17px/1 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.day span{font:600 10px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.day.gym span{color:var(--accent)}
+.day[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.day[aria-selected="true"] span{color:var(--bg);opacity:.8}
+.day i{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.day:not(.is-today) i{visibility:hidden}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+main{padding-block:18px 36px}
+.session-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 16px}
+.session-head h2{font:700 34px/1 var(--display);margin:0;text-transform:uppercase}
+.session-head h2 em{font-style:normal;color:var(--accent)}
+.session-meta{font:600 13px/1.2 var(--body);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.notes{display:grid;gap:8px;margin:14px 0 18px;padding:0;list-style:none}
+.notes li{background:var(--chip);border-radius:8px;padding:10px 12px;font-size:15px;max-width:80ch}
+.notes li strong{font-weight:600}
+
+.list{display:grid;grid-template-columns:1fr;gap:14px;margin:0;padding:0;list-style:none;counter-reset:ex}
+@media (min-width:760px){.list{grid-template-columns:1fr 1fr}}
+.ex{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.ex.fin{border-style:dashed}
+.video{position:relative;aspect-ratio:16/9;background:var(--video);width:100%;max-width:100%}
+.video button{all:unset;cursor:pointer;position:absolute;inset:0;display:block}
+.video img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
+.video .play{position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;background:rgba(14,17,20,.72);display:grid;place-items:center}
+.video .play::after{content:"";border-left:20px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent;margin-left:5px}
+.video .lbl{position:absolute;left:8px;bottom:8px;font:600 11px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:#fff;background:rgba(14,17,20,.72);padding:5px 7px;border-radius:4px}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video.none{display:grid;place-items:center;color:var(--muted);background:var(--chip);font-size:14px;aspect-ratio:auto;padding:18px}
+.body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px;min-width:0;flex:1}
+.ex-title{display:flex;gap:8px;align-items:baseline}
+.ex-title::before{counter-increment:ex;content:counter(ex,decimal-leading-zero);font:700 15px/1 var(--display);color:var(--muted);font-variant-numeric:tabular-nums}
+.ex h3{margin:0;font:600 18px/1.2 var(--body)}
+.rx{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,.8fr) minmax(0,1fr) minmax(0,1fr);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.rx div{padding:7px 8px;min-width:0;border-left:1px solid var(--line)}
+.rx div:first-child{border-left:0}
+.rx dt{font:600 10px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.rx dd{margin:4px 0 0;font:700 18px/1.1 var(--display);font-variant-numeric:tabular-nums}
+.rx dt{white-space:nowrap}
+.rx.wide{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cue{margin:0;font-size:14.5px;color:var(--muted);line-height:1.45}
+.foot{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-top:auto}
+.tag{font:600 11px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;padding:5px 7px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.tag.g{color:var(--g)} .tag.y{color:var(--y)} .tag.r{color:var(--r)}
+.log{display:flex;align-items:center;gap:6px;margin-left:auto;font-size:13px;color:var(--muted)}
+.log input{width:70px;font:600 15px/1 var(--body);padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font-variant-numeric:tabular-nums}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:12px}
+.panel h3{font:700 22px/1.1 var(--display);text-transform:uppercase;margin:0 0 8px}
+.panel p{margin:0 0 10px;max-width:72ch}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 12px/1.2 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+ul.plain{margin:0;padding-left:18px;display:grid;gap:4px}
+.grid2{display:grid;gap:12px}
+@media (min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+footer{color:var(--muted);font-size:13px;padding-block:8px 32px;border-top:1px solid var(--line)}
+footer p{margin:8px 0;max-width:80ch}
+footer a{color:var(--accent)}
+@media (max-width:420px){.phase-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}h1{font-size:36px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Training block 1 · 26 Oct 2026 – 17 Jan 2027</div>
+      <h1>My Gym Plan</h1>
+    </div>
+    <dl class="facts">
+      <div><dt>Goal</dt><dd>Muscle + fat loss</dd></div>
+      <div><dt>Gym</dt><dd>Mon · Thu · Sat</dd></div>
+      <div><dt>Daily targets</dt><dd>140 g protein · 8k+ steps</dd></div>
+      <div><dt>Week</dt><dd id="weekNow">—</dd></div>
+    </dl>
+    <section class="phases" aria-label="Training phase">
+      <div class="phase-tabs" id="phaseTabs"></div>
+      <p class="phase-note" id="phaseNote"></p>
+    </section>
+  </header>
+</div>
+<nav class="week" aria-label="Days of the week">
+  <div class="wrap"><div class="days" role="tablist" id="days"></div></div>
+</nav>
+<div class="wrap">
+  <main id="main"></main>
+  <footer>
+    <p><strong>How to read a prescription.</strong> Sets × reps. <strong>RIR</strong> = reps in reserve: how many more clean reps you could have done when you stop the set. <strong>Tempo</strong> 3-1-1 = 3 s lowering, 1 s pause, 1 s lifting.</p>
+    <p><strong>Elbow tags.</strong> <span style="color:var(--g)">Green</span>: little elbow load. <span style="color:var(--y)">Yellow</span>: light weight, pain-free range, only after your physio approves. Physio advice overrides this plan.</p>
+    <p>Demo videos are embedded from YouTube and belong to their creators. The load log is saved only in this browser.</p>
+  </footer>
+</div>
+
+<script>
+/* ---------- Program data ---------- */
+const START = new Date(2026,9,26); // Mon 26 Oct 2026
+const PHASES = [
+  {name:"Foundation", weeks:"Weeks 1–4", w:[1,4], rir:"3", note:"<strong>Learn the movements.</strong> Choose loads that leave 3 reps in the tank. Add reps before weight. Focus on tempo and range of motion."},
+  {name:"Build", weeks:"Weeks 5–8", w:[5,8], rir:"1–2", note:"<strong>Push the numbers.</strong> Main lifts go to 4 sets. When you hit the top of the rep range on all sets, add weight next session (+2.5–5 kg legs, +1–2.5 kg upper body)."},
+  {name:"Intensify", weeks:"Weeks 9–11", w:[9,11], rir:"0–1", note:"<strong>Heavier main lifts, lower reps.</strong> Last set of each exercise ends close to failure with good form. Keep accessories at RIR 1."},
+  {name:"Deload", weeks:"Week 12", w:[12,12], rir:"4", note:"<strong>Recover and reassess.</strong> Half the sets, same weights, easy effort. Take waist, weight and photos; we plan block 2 from these numbers."}
+];
+/* role rules: sets and reps per phase [P1,P2,P3,Deload] */
+const ROLE = {
+  main:{sets:[3,4,4,2], reps:["10–12","8–10","6–8","8–10"], rest:"2–3 min"},
+  acc:{sets:[2,3,3,2], rest:"90 s"},
+  iso:{sets:[2,3,3,1], rest:"60 s"},
+  core:{sets:[2,3,3,2], rest:"45 s"}
+};
+const YT = {
+  leg_press:"cDGOn-yfKJA", leg_curl:"92MK-Qx3TiM", back_ext:"a2UrKheEcIc", cable_row:"EU7bOadUsNI",
+  lat_raise:"OK1k6NdNo1I", calf_stand:"ndQc4mz4mBU", dead_bug:"g_BYB0R-4Ws", walk_tm:"9ccVxEvWtpA",
+  hack_squat:"hglQExHCM9Q", chest_press:"4YpxZXFADmc", pulldown:"ywhh5jbw1PI", split_squat:"8W3WcfGORwg",
+  face_pull:"SdyH7cnJnkg", leg_ext:"MXvSzXEBOTI", leg_raise:"3oIpxsn6FxQ", bike:"JjuH3j6ydsA",
+  hip_thrust:"huIb360qhkY", pec_deck:"Dbly77Jgbo8", rear_fly:"hmtnyIGgR9A", calf_seat:"smyXy_dhXo8",
+  rev_crunch:"nYcE7-Dhpzk", stairs:"01H1FkKiQMI", bw_squat:"ZLJBfYF_oO0", rev_lunge:"xrPteyQLGAo",
+  sl_bridge:"sVfp4LN9niA", bridge:"bcnun1NjZ1E", wall_sit:"cWTZ8Am1Ee0", high_knees:"WofWmk-4qU4",
+  hip_flexor:"F55tzqJggAY", ham_stretch:"Il1L75v6gq0"
+};
+const WARM = "<strong>Warm-up, 10 min:</strong> 5 min bike or incline walk, then 10 bodyweight squats, 10 glute bridges, 10 leg swings per side. <strong>Ramp-up sets</strong> for exercise 01: 10 reps at ~50%, 5 reps at ~75% of your working weight.";
+const DAYS = [
+ {key:"mon", short:"Mon", day:"Monday", kind:"gym", label:"Gym", title:"Gym A", sub:"Full body · legs focus", time:"75–90 min", notes:[WARM], items:[
+   {ex:"leg_press", name:"Leg press", role:"main", tempo:"3-1-1", tag:"g", cue:"Feet shoulder-width, mid-platform. Lower until knees reach ~90° without the lower back lifting off the pad. Don't lock the knees."},
+   {ex:"leg_curl", name:"Seated leg curl", role:"acc", reps:"10–12", tempo:"2-1-3", tag:"g", cue:"Knee in line with the machine's pivot, pad just above the heels. Squeeze 1 s, return slowly."},
+   {ex:"back_ext", name:"Back extension (45°)", role:"acc", reps:"10–15", tempo:"2-1-2", tag:"g", cue:"Pad at hip crease. Hinge at the hips and stop when the body forms a straight line; never arch past it."},
+   {ex:"cable_row", name:"Seated cable row, neutral grip", role:"acc", reps:"10–12", tempo:"2-1-2", tag:"y", cue:"Chest tall, pull to the navel, shoulder blades back. Stop the stretch short if the elbow pinches."},
+   {ex:"lat_raise", name:"Dumbbell lateral raise", role:"iso", reps:"12–15", tempo:"2-0-2", tag:"y", cue:"Light load, slight elbow bend, lead with the elbows to shoulder height."},
+   {ex:"calf_stand", name:"Standing calf raise", role:"iso", reps:"12–15", tempo:"2-2-1", tag:"g", cue:"2 s pause in the stretched position, full rise on the toes."},
+   {ex:"dead_bug", name:"Dead bug", role:"core", reps:"8/side", tempo:"Slow", tag:"g", cue:"Lower back stays pressed into the floor. Exhale as the opposite arm and leg extend."},
+   {ex:"walk_tm", name:"Incline treadmill walk", fixed:"10–15 min", meta:"8–12% · 5 km/h", tag:"g", fin:true, cue:"Finisher. Hands off the rails, upright posture, steady breathing."}
+ ]},
+ {key:"tue", short:"Tue", day:"Tuesday", kind:"rest", label:"Rest", title:"Rest", sub:"Dutch class", time:"", notes:["Full rest from training. Walk to reach 8,000–10,000 steps and do your physio exercises (see the <strong>Elbow</strong> tab)."], items:[]},
+ {key:"wed", short:"Wed", day:"Wednesday", kind:"home", label:"Home", title:"Home 2", sub:"Legs circuit + intervals", time:"40–45 min",
+  notes:["<strong>Warm-up 5 min:</strong> marching, leg swings, 10 slow squats.","<strong>Circuit:</strong> exercises 01–05 back to back = 1 round. Rounds by phase: 3 · 4 · 4 · 2. Rest 90 s between rounds, then the intervals."],
+  items:[
+   {ex:"bw_squat", name:"Bodyweight squat", fixed:"15–20 reps", meta:"Tempo 3-1-1", tag:"g", cue:"Hips back and down, chest up, knees track over the toes."},
+   {ex:"rev_lunge", name:"Reverse lunge", fixed:"10 / leg", meta:"Tempo 2-1-1", tag:"g", cue:"Step back, lower the back knee toward the floor, drive up through the front heel."},
+   {ex:"sl_bridge", name:"Single-leg glute bridge", fixed:"12 / leg", meta:"1 s squeeze", tag:"g", cue:"One foot planted near the hips, other leg straight. Hips rise level, no twisting."},
+   {ex:"wall_sit", name:"Wall sit", fixed:"30–45 s", meta:"Add 5 s weekly", tag:"g", cue:"Back flat on the wall, knees at 90°, weight in the heels."},
+   {ex:"calf_stand", name:"Calf raise on a step", fixed:"20 reps", meta:"2 s stretch", tag:"g", cue:"Heels sink below the step, then rise as high as you can."},
+   {ex:"high_knees", name:"Intervals: high knees", fixed:"8 × 30 s", meta:"60 s easy between", tag:"g", fin:true, cue:"Hard but controlled. Fast stair climbing or uphill walking are good swaps."}
+ ]},
+ {key:"thu", short:"Thu", day:"Thursday", kind:"gym", label:"Gym", title:"Gym B", sub:"Full body · upper focus", time:"75–90 min", notes:[WARM, "If a <span style=\"color:var(--y)\">yellow</span> exercise isn't cleared by your physio yet, do one extra set of a green exercise from today instead."], items:[
+   {ex:"hack_squat", name:"Hack squat machine", role:"main", tempo:"3-1-1", tag:"g", cue:"Back and hips stay on the pad, feet mid-platform. Go as deep as you control, drive through the whole foot."},
+   {ex:"chest_press", name:"Machine chest press", role:"acc", reps:"10–12", tempo:"2-1-2", tag:"y", cue:"Handles at mid-chest height. Press until the elbows are almost straight; stop before lockout."},
+   {ex:"pulldown", name:"Lat pulldown, neutral grip", role:"acc", reps:"10–12", tempo:"2-1-2", tag:"y", cue:"Slight lean back, pull the handle to the upper chest, elbows travel down and in."},
+   {ex:"split_squat", name:"Bulgarian split squat", role:"acc", reps:"8–12 / leg", tempo:"3-0-1", tag:"g", cue:"Rear foot laces-down on a bench. Drop the back knee straight down; front heel stays planted."},
+   {ex:"face_pull", name:"Cable face pull", role:"iso", reps:"12–15", tempo:"2-1-2", tag:"y", cue:"Rope at face height, pull toward the forehead with elbows high and out."},
+   {ex:"leg_ext", name:"Leg extension", role:"iso", reps:"12–15", tempo:"2-1-3", tag:"g", cue:"Knee aligned with the pivot. Squeeze 1 s at full extension, lower over 3 s."},
+   {ex:"leg_raise", name:"Lying leg raise", role:"core", reps:"10–15", tempo:"Slow", tag:"g", cue:"Hands flat beside you. Lower the legs only as far as the lower back stays down."},
+   {ex:"bike", name:"Bike intervals", fixed:"5 × 30 s", meta:"90 s easy between", tag:"g", fin:true, cue:"Finisher. Seat at hip height, slight knee bend at the bottom of the pedal stroke."}
+ ]},
+ {key:"fri", short:"Fri", day:"Friday", kind:"home", label:"Home", title:"Home 1", sub:"Steady cardio + core", time:"40–45 min",
+  notes:["Keep it easy: Saturday is a gym day. Cardio at a pace where you can still talk in full sentences (zone 2).","<strong>Core circuit:</strong> exercises 02–05, rounds by phase: 2 · 3 · 3 · 2. Rest 60 s between rounds."],
+  items:[
+   {ex:null, name:"Brisk walk, easy jog or bike", fixed:"30 min", meta:"Zone 2 · talk pace", tag:"g", cue:"Steady effort you could keep up for an hour. Outdoors when the weather allows."},
+   {ex:"dead_bug", name:"Dead bug", fixed:"8 / side", meta:"Slow", tag:"g", cue:"If arm movement bothers the elbow, keep the hands on your chest and move only the legs."},
+   {ex:"bridge", name:"Glute bridge", fixed:"15 reps", meta:"1 s squeeze", tag:"g", cue:"Feet flat, drive through the heels, ribs down at the top."},
+   {ex:"leg_raise", name:"Lying leg raise", fixed:"12 reps", meta:"Slow", tag:"g", cue:"Lower back stays pressed down throughout."},
+   {ex:"rev_crunch", name:"Reverse crunch", fixed:"12 reps", meta:"3 s lowering", tag:"g", cue:"Curl the hips off the floor toward the chest; no swinging."}
+ ]},
+ {key:"sat", short:"Sat", day:"Saturday", kind:"gym", label:"Gym", title:"Gym C", sub:"Full body · glutes & back", time:"75–90 min", notes:[WARM], items:[
+   {ex:"hip_thrust", name:"Barbell hip thrust", role:"main", tempo:"2-2-1", tag:"g", cue:"Upper back on the bench edge, bar pad on the hips. Drive up until thighs are flat, 2 s squeeze, chin tucked."},
+   {ex:"leg_curl", name:"Seated or lying leg curl", role:"acc", reps:"10–12", tempo:"2-1-3", tag:"g", cue:"Second hamstring session of the week. Controlled lowering, no hip lift."},
+   {ex:"cable_row", name:"Seated cable row, neutral grip", role:"acc", reps:"10–12", tempo:"2-1-2", tag:"y", cue:"Pause 1 s with the handle at the navel and shoulder blades squeezed."},
+   {ex:"pec_deck", name:"Pec deck", role:"iso", reps:"12–15", tempo:"2-1-2", tag:"y", cue:"Light load. Bring the handles together in front of the chest, open slowly within a pain-free range."},
+   {ex:"rear_fly", name:"Reverse pec deck (rear delts)", role:"iso", reps:"12–15", tempo:"2-1-2", tag:"y", cue:"Chest on the pad, sweep the arms back to the shoulder line with a soft elbow."},
+   {ex:"calf_seat", name:"Seated calf raise", role:"iso", reps:"15–20", tempo:"2-2-1", tag:"g", cue:"Knees under the pad, 2 s stretch at the bottom, full rise."},
+   {ex:"rev_crunch", name:"Reverse crunch", role:"core", reps:"12–15", tempo:"Slow", tag:"g", cue:"Curl the hips toward the chest, lower over 3 s."},
+   {ex:"stairs", name:"Stair climber", fixed:"10–15 min", meta:"Steady pace", tag:"g", fin:true, cue:"Finisher. Upright posture, light hand contact on the rails only."}
+ ]},
+ {key:"sun", short:"Sun", day:"Sunday", kind:"home", label:"Home", title:"Home 3", sub:"Long easy cardio + mobility", time:"45 min",
+  notes:["Recovery day before Monday. <strong>Weekly check-in:</strong> average morning weight, waist at the navel, lifts that went up, elbow pain (0–10) and range, sleep and energy."],
+  items:[
+   {ex:null, name:"Long walk or bike ride", fixed:"35 min", meta:"Easy · outdoors", tag:"g", cue:"Conversational pace the whole way."},
+   {ex:"hip_flexor", name:"Half-kneeling hip flexor stretch", fixed:"2 × 30 s / side", meta:"Mobility", tag:"g", cue:"Tuck the pelvis under, then shift forward gently until the front of the back hip stretches."},
+   {ex:"ham_stretch", name:"Lying hamstring stretch", fixed:"2 × 30 s / side", meta:"Mobility", tag:"g", cue:"Loop a towel around the foot so the arms stay relaxed. Keep the knee straight."}
+ ]},
+ {key:"elbow", short:"Elbow", day:"Elbow", kind:"elbow", label:"Daily", title:"Rehab", sub:"Physio-approved exercises only", time:"~10 min · 1–3× a day", notes:[], items:[]}
+];
+
+const ELBOW = `
+<div class="panel">
+  <h3>Mobility routine</h3>
+  <p>Your physiotherapist’s program comes first. These are exercises physios commonly use after an elbow fracture; do only the ones your physio approves. Warm the joint first (warm shower or towel, or after cardio). Little and often beats one hard session.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Exercise</th><th>How</th><th>Dose</th></tr></thead>
+    <tbody>
+      <tr><td>Active bend and straighten</td><td>Elbow by your side. Bend as far as you can, hold 5 s; straighten as far as you can, hold 5 s.</td><td class="n">2 × 10</td></tr>
+      <tr><td>Assisted bend</td><td>Other hand gently pushes the wrist toward the shoulder until you feel a stretch, not pain.</td><td class="n">3 × 30 s</td></tr>
+      <tr><td>Table slide</td><td>Forearm on a table, palm up; slide the hand forward and let gravity straighten the arm.</td><td class="n">3 × 30 s</td></tr>
+      <tr><td>Forearm rotation</td><td>Elbow bent 90° at your side; turn the palm up, then down. Later hold a hammer near its end.</td><td class="n">2 × 15</td></tr>
+      <tr><td>Grip squeeze</td><td>Squeeze a soft ball or rolled towel.</td><td class="n">2 × 15</td></tr>
+      <tr><td>Wrist curl, both ways</td><td>Forearm on your thigh, a 0.5–1 kg water bottle.</td><td class="n">2 × 15</td></tr>
+    </tbody>
+  </table></div>
+</div>
+<div class="grid2">
+  <div class="panel"><h3>Pain rule</h3><p>Discomfort up to 3/10 that settles within 24 hours is usually acceptable. Sharp pain, or pain that is worse the next day, means reduce or stop that exercise.</p></div>
+  <div class="panel"><h3>Contact your physio or doctor if</h3><ul class="plain">
+    <li>Swelling, heat or redness is increasing</li><li>Tingling or numbness in the ring and little fingers</li>
+    <li>You lose range of motion after training</li><li>A painful click or catch</li></ul></div>
+</div>`;
+
+/* ---------- State ---------- */
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const weekNo=Math.floor((new Date()-START)/(7*864e5))+1;
+const autoPhase=weekNo<=4?0:weekNo<=8?1:weekNo<=11?2:3;
+let phase=Number(store.get("gym.phase") ?? autoPhase); if(!(phase>=0&&phase<=3)) phase=autoPhase;
+document.getElementById("weekNow").textContent = weekNo<1?"Starts 26 Oct":weekNo>12?"Block done":`${weekNo} of 12`;
+
+/* ---------- Phase tabs ---------- */
+const phaseTabs=document.getElementById("phaseTabs"), phaseNote=document.getElementById("phaseNote");
+PHASES.forEach((p,i)=>{
+  const b=document.createElement("button");b.type="button";b.className="ph";b.id="ph-"+i;
+  b.innerHTML=`<b>${p.name}${i===autoPhase&&weekNo>=1&&weekNo<=12?'<span class="now">now</span>':''}</b><span>${p.weeks} · RIR ${p.rir}</span>`;
+  b.addEventListener("click",()=>{phase=i;store.set("gym.phase",String(i));renderPhase();show(current,false)});
+  phaseTabs.appendChild(b);
+});
+function renderPhase(){PHASES.forEach((p,i)=>document.getElementById("ph-"+i).setAttribute("aria-pressed",String(i===phase)));phaseNote.innerHTML=PHASES[phase].note}
+renderPhase();
+
+/* ---------- Day tabs ---------- */
+const daysEl=document.getElementById("days"), main=document.getElementById("main");
+const todayKey=["sun","mon","tue","wed","thu","fri","sat"][new Date().getDay()];
+let current=todayKey;
+DAYS.forEach(d=>{
+  const b=document.createElement("button");b.type="button";b.className="day "+d.kind+(d.key===todayKey?" is-today":"");b.id="tab-"+d.key;
+  b.setAttribute("role","tab");b.setAttribute("aria-controls","main");
+  b.innerHTML=`<b>${d.short}</b><span>${d.label}</span><i aria-hidden="true"></i>`;
+  b.addEventListener("click",()=>show(d.key,true));daysEl.appendChild(b);
+});
+
+const TAG={g:"Green",y:"Yellow",r:"Red"};
+function prescription(it){
+  if(it.fixed) return `<dl class="rx wide"><div><dt>Dose</dt><dd>${it.fixed}</dd></div><div><dt>Detail</dt><dd>${it.meta||""}</dd></div></dl>`;
+  const R=ROLE[it.role], sets=R.sets[phase], reps=it.reps||R.reps[phase];
+  return `<dl class="rx"><div><dt>Sets×reps</dt><dd>${sets} × ${reps}</dd></div><div><dt>RIR</dt><dd>${PHASES[phase].rir}</dd></div><div><dt>Tempo</dt><dd>${it.tempo}</dd></div><div><dt>Rest</dt><dd>${R.rest}</dd></div></dl>`;
+}
+function videoBlock(it){
+  const id=it.ex&&YT[it.ex];
+  if(!id) return `<div class="video none">No equipment, no demo needed.</div>`;
+  return `<div class="video" data-id="${id}"><button type="button" aria-label="Play demo video: ${it.name}"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/${id}/hqdefault.jpg"><span class="play" aria-hidden="true"></span><span class="lbl">Demo</span></button></div>`;
+}
+function show(key,user){
+  current=key;
+  const d=DAYS.find(x=>x.key===key)||DAYS[0];
+  document.querySelectorAll(".day").forEach(b=>b.setAttribute("aria-selected",String(b.id==="tab-"+d.key)));
+  let h=`<div class="session-head"><h2>${d.day}<em> · ${d.title}</em></h2><div class="session-meta">${[d.sub,d.time].filter(Boolean).join(" · ")}</div></div>`;
+  if(d.notes.length) h+=`<ul class="notes">${d.notes.map(n=>`<li>${n}</li>`).join("")}</ul>`;
+  if(d.kind==="elbow") h+=ELBOW;
+  if(d.items.length){
+    h+=`<ol class="list">`+d.items.map((it,i)=>{
+      const lk=`gym.load.${d.key}.${i}`, logged=it.role?`<label class="log">Last kg <input id="${lk}" inputmode="decimal" value="${(store.get(lk)||"").replace(/"/g,"")}"></label>`:"";
+      return `<li class="ex${it.fin?" fin":""}">${videoBlock(it)}<div class="body"><div class="ex-title"><h3>${it.name}</h3></div>${prescription(it)}<p class="cue">${it.cue}</p><div class="foot"><span class="tag ${it.tag}">${TAG[it.tag]} · elbow</span>${logged}</div></div></li>`;
+    }).join("")+`</ol>`;
+  }
+  main.innerHTML=h;
+  main.querySelectorAll(".video[data-id] button").forEach(btn=>btn.addEventListener("click",()=>{
+    const box=btn.parentElement,id=box.dataset.id;
+    box.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1&modestbranding=1" title="Demo video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  }));
+  main.querySelectorAll(".log input").forEach(inp=>inp.addEventListener("change",()=>store.set(inp.id,inp.value.trim())));
+  if(user){try{history.replaceState(null,"","#"+d.key)}catch(e){} window.scrollTo({top:document.querySelector("nav.week").offsetTop-2})}
+}
+const fromHash=(location.hash||"").slice(1);
+show(DAYS.some(d=>d.key===fromHash)?fromHash:todayKey,false);
+</script>
+</body>
+</html>
