@@ -195,7 +195,7 @@ const YT={
  pullup:"TMnxKjdYcME", row:"FEFjR70BPt8", pulldown:"ywhh5jbw1PI", face_pull:"SdyH7cnJnkg", oh_ext:"l4i7iDLiMXs", pushdown:"K--j4Qh9d2s", chest_press:"4YpxZXFADmc",
  squat:"_vNjV8teHW0", rdl:"lKLYvNGz6mk", leg_press:"cDGOn-yfKJA", seated_curl:"92MK-Qx3TiM", shoulder_press:"e5gJP7quyGk", shrug:"xiLT85G_GuU",
  split_squat:"8W3WcfGORwg", calf:"HvvqTpTongY", crunch:"2R93PU2IM-Y", flutter:"rqyyVGT3vHI", rev_crunch:"nYcE7-Dhpzk", wrist_curl:"VGkF2NTtao0",
- walk_tm:"9ccVxEvWtpA", incline_bench:"11gY7Q5D5wo", db_bench:"5Y3VZsLb1Ys", pec_deck:"Dbly77Jgbo8", hammer:"zC3nLlEvin4", straight_arm:"duHQk2PxNos", dip_machine:"Zg0tT27iYuY", rev_pushdown:"nFoOW6zy6Bw", leg_ext:"MXvSzXEBOTI", calf_machine:"ndQc4mz4mBU", rear_fly:"hmtnyIGgR9A", bw_squat:"ZLJBfYF_oO0", sl_bridge:"sVfp4LN9niA", bike:"JjuH3j6ydsA", stairs:"01H1FkKiQMI", hip_flexor:"F55tzqJggAY", ham_stretch:"Il1L75v6gq0"
+ walk_tm:"9ccVxEvWtpA", incline_bench:"11gY7Q5D5wo", db_bench:"5Y3VZsLb1Ys", pec_deck:"Dbly77Jgbo8", hammer:"zC3nLlEvin4", straight_arm:"duHQk2PxNos", dip_machine:"Zg0tT27iYuY", rev_pushdown:"nFoOW6zy6Bw", leg_ext:"MXvSzXEBOTI", calf_machine:"ndQc4mz4mBU", rear_fly:"hmtnyIGgR9A", bw_squat:"ZLJBfYF_oO0", sl_bridge:"sVfp4LN9niA", hip_thrust:"huIb360qhkY", cable_crunch:"b9FJ4hIK3pI", db_row:"fURsHPHgssI", russian_twist:"tAmsTZD9tjc", bike:"JjuH3j6ydsA", stairs:"01H1FkKiQMI", hip_flexor:"F55tzqJggAY", ham_stretch:"Il1L75v6gq0"
 };
 
 /* ---------- Sessions ---------- */
@@ -222,15 +222,17 @@ const DAYS=[
   {ex:"crunch",name:"Crunch",sets:[15,15,20],rest:"45 s",tag:"g",cue:"Hands across the chest, curl ribs toward hips, exhale at the top."},
     fin("stairs","Intervals: stairs or uphill","6 × 30 s","60 s easy between","Hard but controlled. Max two hard interval sessions a week.")
  ]},
- {key:"thu",short:"Thu",day:"Thursday",kind:"gym",label:"Gym",title:"Gym B",sub:"Back · triceps · rear delts",notes:[WARM],items:[
+ {key:"thu",short:"Thu",day:"Thursday",kind:"gym",label:"Gym",title:"Gym B",sub:"Back · triceps · rear delts · abs",notes:[WARM],items:[
   {ex:"pullup",name:"Pull-up (assisted if needed)",sets:[6,8,10],rest:"2–3 min",tag:"y",swap:"Neutral-grip lat pulldown if hanging or the bottom position is uncomfortable.",cue:"Pull the chest toward the bar, elbows down and back. Use the assisted machine to hit the reps."},
   {ex:"row",name:"Bent-over barbell row",sets:[6,8,10],rest:"2–3 min",tag:"y",swap:"If gripping the bar hurts: chest-supported machine row.",cue:"Hinge to 45°, flat back. Pull to the belly button, lower with control."},
   {ex:"pulldown",name:"Lat pulldown, neutral grip",sets:[8,10,12],rest:"90 s",tag:"y",cue:"Slight lean back, pull to the upper chest, and use only a comfortable shoulder and elbow range."},
   {ex:"cable_row",name:"Seated cable row",sets:[8,10,12],rest:"90 s",tag:"y",cue:"Chest tall, pull to the navel, pause 1 s with shoulder blades squeezed."},
+  {ex:"db_row",name:"Single-arm dumbbell row",sets:[10,12,12],rest:"75 s",unit:"/ arm",tag:"y",why:"One arm at a time: longer stretch and fixes left–right differences.",cue:"Knee and hand on a bench, flat back, pull the dumbbell to the hip, full stretch at the bottom."},
   {ex:"straight_arm",name:"Straight-arm cable pulldown",sets:[10,12,15],rest:"60 s",tag:"y",cue:"Arms almost straight, sweep the bar from eye level to the thighs using the lats."},
   {ex:"face_pull",name:"Face pull",sets:[12,15,15],rest:"60 s",tag:"y",cue:"Rope at face height, pull toward the forehead, elbows high."},
   {ex:"pushdown",name:"Cable triceps pushdown",sets:[8,10,12],rest:"75–90 s",tag:"y",swap:"Use a comfortable range; do not force lockout.",cue:"Elbows pinned at your sides, push down, squeeze 1 s."},
   {ex:"oh_ext",name:"Overhead cable triceps extension",sets:[8,10,12],rest:"75 s",tag:"y",why:"Overhead work grew ~40% more triceps than arms-down in a 12-week study.",swap:"Stop the stretch where it's comfortable; your extension is still limited.",cue:"Face away from the cable, elbows by your ears, lower behind the head, extend."},
+  {ex:"cable_crunch",name:"Kneeling cable crunch",sets:[12,15,15],rest:"60 s",tag:"g",why:"Weighted ab work: home abs are bodyweight only.",cue:"Rope beside your head, hips still, curl the ribs down toward the hips, exhale hard."},
   fin("bike","Easy bike","5 min","Zone 2","Cool-down.")
  ]},
  {key:"fri",short:"Fri",day:"Friday",kind:"home",label:"Home",title:"Home B",sub:"Abs · calves · grip · cardio",notes:["Easy session: Saturday is leg day. Keep core work controlled, grip work optional, and cardio conversational so it does not impair Saturday performance."],items:[
@@ -239,17 +241,19 @@ const DAYS=[
   {ex:null,name:"Towel wring and grip squeeze",sets:[15,15,15],rest:"30 s",tag:"y",cue:"Forearm work without weights: wring a rolled towel both directions, then squeeze a soft ball. This is optional general grip work, not a substitute for prescribed elbow rehabilitation. Keep it only if your physiotherapist agrees and it causes no symptom increase."},
   fin("walk_tm","Steady cardio: brisk walk or bike","20 min","Zone 2 · talk pace","Easy enough to hold a conversation.")
  ]},
- {key:"sat",short:"Sat",day:"Saturday",kind:"gym",label:"Gym",title:"Gym C",sub:"Legs · shoulders · traps",notes:[WARM.replace("5 min easy bike","5 min easy bike, leg swings")],items:[
+ {key:"sat",short:"Sat",day:"Saturday",kind:"gym",label:"Gym",title:"Gym C",sub:"Legs · glutes · shoulders · traps · obliques",notes:[WARM.replace("5 min easy bike","5 min easy bike, leg swings")],items:[
   {ex:"squat",name:"Barbell squat",sets:[6,8,10,10],rest:"2–3 min",tag:"y",swap:"If holding the bar on your back hurts the elbow: hack squat or Smith machine squat.",cue:"Brace, sit down between the heels to at least parallel, drive up."},
   {ex:"leg_press",name:"Leg press",sets:[8,10,12,15],rest:"2 min",tag:"g",cue:"Lower until knees reach about 90° without the lower back lifting."},
   {ex:"rdl",name:"Romanian deadlift",sets:[8,10,12],rest:"2 min",tag:"y",swap:"If the grip pulls on the elbow: lifting straps, or 45° back extensions.",cue:"Soft knees, hips back, bar close to the legs, lower until a strong hamstring stretch."},
+  {ex:"hip_thrust",name:"Barbell hip thrust",sets:[8,10,10],rest:"2 min",tag:"g",why:"Heavy direct glute work, the one big gap in the gym days.",cue:"Upper back on the bench edge, bar pad on the hips. Drive up until thighs are flat, 2 s squeeze, chin tucked."},
   {ex:"seated_curl",name:"Seated leg curl",sets:[6,8,10,12],rest:"90 s",tag:"g",why:"Seated curls grew more hamstring than lying curls (about 14% vs 9%).",cue:"Knee lined up with the pivot, curl fully, lower over 3 seconds."},
   {ex:"leg_ext",name:"Leg extension",sets:[10,12,15],rest:"75 s",tag:"g",cue:"Squeeze 1 s at full extension, lower over 3 s."},
   {ex:"calf_machine",name:"Standing calf raise machine",sets:[8,10,12],rest:"60–90 s",tag:"g",why:"Heavy calf work here, since home calves are bodyweight only.",cue:"2 s pause in the stretch, full rise on the toes."},
   {ex:"shoulder_press",name:"Machine shoulder press",sets:[6,8,10],rest:"2 min",tag:"y",swap:"Light, stop before lockout.",cue:"Handles at shoulder height, press up without arching your back."},
   {ex:"lat_raise",name:"Lateral raise",sets:[8,10,12],rest:"60 s",tag:"y",cue:"Lead with the elbows, 2 s down."},
   {ex:"rear_fly",name:"Reverse pec deck (rear delts)",sets:[12,15,15],rest:"60 s",tag:"y",cue:"Chest on the pad, sweep the arms back to the shoulder line, soft elbows."},
-  {ex:"shrug",name:"Dumbbell shrug",sets:[10,12,12],rest:"60 s",tag:"y",swap:"If holding dumbbells pulls on the elbow: shrug machine or Smith machine.",cue:"Shoulders straight up, 1 s squeeze, no rolling."}
+  {ex:"shrug",name:"Dumbbell shrug",sets:[10,12,12],rest:"60 s",tag:"y",swap:"If holding dumbbells pulls on the elbow: shrug machine or Smith machine.",cue:"Shoulders straight up, 1 s squeeze, no rolling."},
+  {ex:"russian_twist",name:"Russian twist",sets:[15,20,20],rest:"45 s",unit:"/ side",tag:"g",why:"Obliques: the one ab area the plan didn't train.",cue:"Lean back slightly, feet on the floor, rotate the ribs side to side under control; hold a plate when it gets easy."},
  ]},
  {key:"sun",short:"Sun",day:"Sunday",kind:"home",label:"Home",title:"Home C",sub:"Long walk · abs · mobility",notes:["<strong>Weekly check-in:</strong> average morning weight, waist at the navel, key lifts, sleep/recovery, and any elbow symptoms or change in range. Compare trends over 2–3 weeks rather than reacting to one weigh-in."],items:[
   fin(null,"Long walk or bike ride","30–35 min","Easy, outdoors","Conversational pace."),
@@ -266,10 +270,10 @@ const DAYS=[
 
 /* ---------- Info pages ---------- */
 const VOL=[
- ["Chest","Mon 17",17,"10–20"],["Back (lats, mid-back)","Thu 15 (+ face pulls)",15,"10–20"],["Quads","Sat 11 · Wed 6",17,"10–16"],
- ["Hamstrings","Sat 7 (+ bridges)",8,"8–12"],["Glutes","Sat 7 · Wed 9 (+ indirect)",16,"8–16"],["Side delts","Mon 3 · Sat 3 (+ presses)",8,"6–12"],
- ["Rear delts","Thu 3 · Sat 3 (+ rows)",10,"6–12"],["Biceps","Mon 4 (+ pulls)",11,"8–16"],["Triceps","Thu 6 (+ presses)",14,"8–16"],
- ["Calves","Sat 3 · Wed 4 · Fri 3",10,"6–12"],["Abs","Wed 3 · Fri 3",6,"4–8"]
+ ["Chest","Mon 17",17,"10–20"],["Back (lats, mid-back)","Thu 18 (+ face pulls)",18,"10–20"],["Quads","Sat 11 · Wed 6",17,"10–16"],
+ ["Hamstrings","Sat 7 (+ bridges)",8,"8–12"],["Glutes","Sat 10 · Wed 9 (+ indirect)",19,"10–20"],["Side delts","Mon 3 · Sat 3 (+ presses)",8,"6–12"],
+ ["Rear delts","Thu 3 · Sat 3 (+ rows)",10,"6–12"],["Biceps","Mon 4 (+ pulls)",13,"8–16"],["Triceps","Thu 6 (+ presses)",14,"8–16"],
+ ["Calves","Sat 3 · Wed 4 · Fri 3",10,"6–12"],["Abs (incl. obliques)","Thu 3 · Sat 3 · Wed 3 · Fri 3",12,"8–16"]
 ];
 const volRows=VOL.map(([m,where,n,rng])=>{const [lo,hi]=rng.split("–").map(Number);return `<tr><td><b>${m}</b><div class="bar" aria-hidden="true"><span class="zone" style="left:${lo/24*100}%;right:${100-hi/24*100}%"></span><i style="width:${Math.min(n,24)/24*100}%"></i></div></td><td>${where}</td><td class="n">${n}</td><td class="n">${rng}</td></tr>`}).join("");
 const blockRows=BLOCK.map((b,i)=>`<li class="${PH&&phaseOf(WEEK)===i?"cur":""}"><div class="wk">Week ${b.w}</div><div><b>${b.name}</b> <span class="pill lo">RIR ${b.rir}</span><p>${b.text}</p></div></li>`).join("");
@@ -293,7 +297,7 @@ program:`
 <div class="grid2">
   <div class="panel"><h3>Progression rules</h3><ol class="plain">
     <li>Use the RIR of the current week (shown at the top of the page).</li>
-    <li>When every set hits its target reps at that RIR, add weight next session: +2.5 kg on barbell and leg lifts, the next dumbbell or pin on the rest.</li>
+    <li>When every set hits its target reps at that RIR for <strong>two sessions in a row</strong>, add weight: +2.5 kg on barbell and leg lifts, the next dumbbell or pin on the rest. Until then, add a rep where you can.</li>
     <li>If reps drop two sessions in a row, keep the weight, check sleep and food, and take the deload early if needed.</li>
     <li>Log your heaviest set in the kg box on each card.</li></ol></div>
   <div class="panel"><h3>Rest and effort</h3><ul class="plain">
@@ -306,6 +310,9 @@ program:`
     <li>Aim for 8,000–10,000 steps a day if practical; keep activity sustainable.</li>
     <li>Keep intervals to at most 1–2 sessions weekly, and reduce them if they affect leg training or recovery.</li>
     <li>Do cardio after lifting or on home days, not before lifting.</li></ul></div>
+  <div class="panel"><h3>Desk days</h3><ul class="plain">
+    <li>Long hours sitting: every hour, stand up for about a minute and stretch the chest (hands behind you, open the shoulders) and the lower back.</li>
+    <li>A short walk at lunch adds 2,000–3,000 steps toward your daily target.</li></ul></div>
   <div class="panel"><h3>Sleep</h3><p>7–9 hours. In a diet study, people sleeping 5.5 h instead of 8.5 h lost more muscle and less fat on the same calories.</p></div>
 </div>`,
 food:`
@@ -343,7 +350,8 @@ food:`
     <li>4 meals, 30–40 g protein each, every 3–4 hours.</li>
     <li>Half the plate vegetables at lunch and dinner.</li>
     <li>Limit alcohol, sugary drinks and fried snacks.</li>
-    <li>Log food in an app for the first 2 weeks to learn portions.</li></ul></div>
+    <li>Log food in an app for the first 2 weeks to learn portions.</li>
+    <li>Training after work: a light snack 45–60 min before (banana and yogurt, or bread with cheese).</li></ul></div>
   <div class="panel"><h3>When to adjust</h3><ul class="plain">
     <li>Weigh 3–4 mornings a week; use the weekly average.</li>
     <li>No change in average weight or waist for 2–3 weeks → first check tracking consistency; if consistent, reduce by about 100–150 kcal/day or add a little activity.</li>
